@@ -23,8 +23,10 @@
   "devDependencies": {
     "@element-plus/nuxt": "^1.1.4",
     "@nuxt/eslint": "^1.10.0",
+    "@vitejs/plugin-legacy": "^7.2.1",
     "@vueuse/nuxt": "^14.0.0",
     "eslint": "^9.39.1",
+    "terser": "^5.44.1",
     "typescript-eslint": "^8.48.0"
   }
 }
