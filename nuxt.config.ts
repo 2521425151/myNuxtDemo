@@ -1,5 +1,3 @@
-import legacy from '@vitejs/plugin-legacy'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // 兼容性日期：确保使用特定日期的 Nuxt 行为和 API
@@ -32,62 +30,21 @@ export default defineNuxtConfig({
   // 不支持：IE 11（已于2022年停止支持）
   vite: {
     // Vite 插件配置
-    plugins: [
-      legacy({
-        // 目标浏览器：支持 ES Modules 的现代浏览器
-        targets: [
-          'chrome >= 61',      // Chrome 61+ (2017年9月)
-          'firefox >= 60',     // Firefox 60+ (2018年5月)
-          'safari >= 10.1',    // Safari 10.1+ (2017年3月)
-          'edge >= 16',        // Edge 16+ (2017年10月)
-          'ios >= 10.3',       // iOS Safari 10.3+ (2017年3月)
-          'android >= 61'      // Android Chrome 61+ (2017年9月)
-        ],
-        // 为现代浏览器注入必要的 polyfills
-        modernPolyfills: true,
-        // 生成传统浏览器的降级代码块
-        renderLegacyChunks: true,
-        // 自动注入必要的 ES6+ polyfills
-        polyfills: [
-          'es.promise',              // Promise 支持
-          'es.promise.finally',      // Promise.finally 方法
-          'es.array.iterator',       // 数组迭代器
-          'es.object.assign',        // Object.assign 方法
-          'es.object.keys',          // Object.keys 方法
-          'es.array.from',           // Array.from 方法
-          'es.array.includes',       // Array.includes 方法
-          'es.string.includes'       // String.includes 方法
-        ]
-      })
-    ],
+    // 注意：在 SSG 模式下暂时禁用 legacy 插件，避免模块加载顺序问题
+    // plugins: [
+    //   legacy({
+    //     targets: ['chrome >= 61', 'firefox >= 60', 'safari >= 10.1', 'edge >= 16'],
+    //     modernPolyfills: true,
+    //     renderLegacyChunks: true,
+    //   })
+    // ],
     
     // Vite 构建选项
     build: {
       // 编译目标：ES2015 (ES6) 语法
       target: 'es2015',
       // CSS 编译目标：Chrome 61+
-      cssTarget: 'chrome61',
-      // 模块预加载配置
-      modulePreload: {
-        polyfill: true             // 启用模块预加载 polyfill
-      },
-      
-      // Rollup 打包配置
-      rollupOptions: {
-        output: {
-          // ========== SSG 单文件打包配置 ==========
-          // 禁用代码分割，不自动创建多个 chunk
-          manualChunks: undefined,
-          // 将所有动态导入内联到主文件中，生成单个 JS 文件
-          inlineDynamicImports: true,
-          // 入口文件命名规则：_nuxt/[name].js
-          entryFileNames: '_nuxt/[name].js',
-          // chunk 文件命名规则：_nuxt/[name].js
-          chunkFileNames: '_nuxt/[name].js',
-          // 静态资源命名规则：_nuxt/[name].[ext]
-          assetFileNames: '_nuxt/[name].[ext]'
-        }
-      }
+      cssTarget: 'chrome61'
     }
   },
   
@@ -99,6 +56,21 @@ export default defineNuxtConfig({
         // 服务器端代码编译目标：ES2015
         target: 'es2015'
       }
+    },
+    // 预渲染配置（SSG 静态站点生成）
+    prerender: {
+      // 预渲染所有路由
+      routes: [
+        '/',
+        '/admin',
+        '/admin/dashboard',
+        '/admin/users',
+        '/admin/content',
+        '/admin/settings',
+        '/api-demo'
+      ],
+      // 自动爬取链接
+      crawlLinks: true
     }
   },
 
