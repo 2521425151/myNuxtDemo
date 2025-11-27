@@ -11,7 +11,8 @@ export default defineNuxtConfig({
   // @nuxt/eslint - ESLint 代码检查
   // @pinia/nuxt - Pinia 状态管理
   // @vueuse/nuxt - VueUse 组合式工具集
-  modules: ['@element-plus/nuxt', '@nuxt/eslint', '@pinia/nuxt', '@vueuse/nuxt'],
+  // @teages/nuxt-legacy - 旧版浏览器兼容性支持
+  modules: ['@element-plus/nuxt', '@nuxt/eslint', '@pinia/nuxt', '@vueuse/nuxt', '@teages/nuxt-legacy'],
   
   // 组件自动导入配置
   components: {
