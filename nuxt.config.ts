@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  // 扩展 base 层
+  extends: ['./layers/base'],
+  
   // 兼容性日期：确保使用特定日期的 Nuxt 行为和 API
   compatibilityDate: '2025-07-15',
   
