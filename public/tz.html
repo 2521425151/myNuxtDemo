@@ -64,7 +64,8 @@
             border-bottom: 1px solid #f0f0f0;
             transition: all 0.2s;
         }
-        .suggestion-item:hover { background: #f5f7ff; color: #667eea; }
+        .suggestion-item { color: #666; }
+        .suggestion-item:hover { background: #f5f7ff; color: #8090e0; }
         .suggestion-item:last-child { border-bottom: none; }
         
         button { 
@@ -114,7 +115,7 @@
             border-bottom: 2px solid #f0f0f0;
         }
         .card-header h2 { 
-            color: #333; 
+            color: #666; 
             font-size: 18px; 
             margin: 0;
             display: flex;
@@ -144,7 +145,7 @@
             word-break: break-all; 
             max-height: 450px; 
             overflow-y: auto;
-            color: #444;
+            color: #777;
             border: 1px solid #e8e8e8;
         }
         .data-text::-webkit-scrollbar { width: 6px; }
@@ -196,11 +197,162 @@
             background: #fff;
             cursor: pointer;
         }
+        
+        /* 主题切换器 */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            background: rgba(255,255,255,0.95);
+            padding: 8px 12px;
+            border-radius: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        .theme-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0;
+            min-width: auto;
+        }
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .theme-btn.active {
+            border-color: #333;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+        }
+        .theme-btn.dark { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        .theme-btn.default { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .theme-btn.light { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+        
+        /* 黑色主题 */
+        body.theme-dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        .theme-dark .search-box {
+            background: rgba(30,30,50,0.95);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .theme-dark input,
+        .theme-dark select {
+            background: #2a2a4a;
+            border-color: #3a3a5a;
+            color: #e0e0e0;
+        }
+        .theme-dark input:focus,
+        .theme-dark select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.3);
+        }
+        .theme-dark input::placeholder { color: #888; }
+        .theme-dark .suggestions {
+            background: #2a2a4a;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .theme-dark .suggestion-item {
+            color: #9090a0;
+            border-bottom-color: #3a3a5a;
+        }
+        .theme-dark .suggestion-item:hover {
+            background: #3a3a5a;
+            color: #a0a0c0;
+        }
+        .theme-dark .card {
+            background: rgba(30,30,50,0.95);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .theme-dark .card-header {
+            border-bottom-color: #3a3a5a;
+        }
+        .theme-dark .card-header h2 { color: #9090a0; }
+        .theme-dark .data-text {
+            background: #1a1a2e;
+            border-color: #3a3a5a;
+            color: #8888a0;
+        }
+        .theme-dark .data-text::-webkit-scrollbar-thumb { background: #4a4a6a; }
+        .theme-dark .error { background: rgba(30,30,50,0.95); }
+        .theme-dark .theme-switcher {
+            background: rgba(30,30,50,0.95);
+        }
+        .theme-dark .theme-btn.active { border-color: #fff; }
+        
+        /* 白色主题 */
+        body.theme-light {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .theme-light .search-box {
+            background: #fff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        .theme-light input,
+        .theme-light select {
+            border-color: #d0d0d0;
+        }
+        .theme-light .card {
+            background: #fff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+        }
+        .theme-light .stock-info {
+            background: linear-gradient(135deg, #4a90d9 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        .theme-light button:not(.theme-btn) {
+            background: linear-gradient(135deg, #4a90d9 0%, #667eea 100%);
+        }
+        .theme-light button:not(.theme-btn):hover {
+            box-shadow: 0 5px 20px rgba(74,144,217,0.4);
+        }
+        .theme-light .copy-btn {
+            background: linear-gradient(135deg, #0ea5a0 0%, #2dd4bf 100%);
+        }
+        .theme-light .copy-btn:hover {
+            box-shadow: 0 5px 20px rgba(14,165,160,0.4);
+        }
+        .theme-light .copy-all-btn {
+            background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+        }
+        .theme-light .copy-all-btn:hover {
+            box-shadow: 0 5px 25px rgba(244,63,94,0.4);
+        }
+        .theme-light .data-text {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+            color: #8090a0;
+        }
+        .theme-light .card-header h2 {
+            color: #7080a0;
+        }
+        .theme-light .suggestion-item {
+            color: #7080a0;
+        }
+        .theme-light .suggestion-item:hover {
+            color: #6080c0;
+        }
+        .theme-light .toast {
+            background: linear-gradient(135deg, #0ea5a0 0%, #2dd4bf 100%);
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
+    <!-- 主题切换器 -->
+    <div class="theme-switcher">
+        <button class="theme-btn dark" onclick="setTheme('dark')" title="黑色主题"></button>
+        <button class="theme-btn default active" onclick="setTheme('default')" title="默认主题"></button>
+        <button class="theme-btn light" onclick="setTheme('light')" title="白色主题"></button>
+    </div>
+
+    <div class="container"></div>
         <div class="search-box">
             <div class="input-wrapper">
                 <input type="text" id="stockCode" placeholder="输入股票代码，如：300475" maxlength="6" autocomplete="off">
@@ -244,6 +396,20 @@
     <div class="toast" id="toast">✓ 已复制到剪贴板</div>
 
     <script>
+        // 主题切换功能
+        function setTheme(theme) {
+            document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.theme-btn.${theme}`).classList.add('active');
+            localStorage.setItem('stock-theme', theme);
+        }
+        
+        // 加载保存的主题
+        (function() {
+            const savedTheme = localStorage.getItem('stock-theme') || 'default';
+            setTheme(savedTheme);
+        })();
+
         var realtimeCallback = null;
         function fortune_hq(data) {
             if (realtimeCallback) {
