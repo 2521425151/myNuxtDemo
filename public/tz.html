@@ -498,9 +498,12 @@
         }
 
         const stockList = [
+           
             // ==================== 可转债 ====================
-            '113048-福能转债', '118060-瑞可转债', '118061-茂莱转债', '123188-颀中转债',
-            '123258-今25转债', '123259-锦浪转02', '127087-金威转债',
+            '110099-福能转债', '118060-瑞可转债', '118061-茂莱转债', '118059-颀中转债',
+            '113699-金25转债', '123259-锦浪转02', '127111-金威转债',
+             // ==================== ETF ====================
+            '518880-黄金ETF','513300-纳斯达克ETF','513850-美国50ETF','513100-纳指ETF',
 
             // ==================== 非st和*st的北交所股票 ====================
             '920000-安徽凤凰', '920001-纬达光电', '920002-万达轴承', '920003-中诚咨询',
@@ -1863,10 +1866,16 @@
             }
         }
 
+        // 判断是否为可转债（代码以1开头）
+        function isBond(code) {
+            return code.startsWith('1');
+        }
+
         async function fetchRealtimeData(stockCode) {
             const suffix = stockCode.slice(-3);
             const timestamp = Date.now();
-            const url = `https://hq.stock.sohu.com/cn/${suffix}/cn_${stockCode}-1.html?_=${timestamp}`;
+            const prefix = isBond(stockCode) ? 'bd' : 'cn';
+            const url = `https://hq.stock.sohu.com/${prefix}/${suffix}/${prefix}_${stockCode}-1.html?_=${timestamp}`;
 
             const data = await loadRealtime(url);
 
@@ -1899,7 +1908,8 @@
             const startDate = new Date(today);
             startDate.setDate(startDate.getDate() - 150);
 
-            const url = `https://q.stock.sohu.com/hisHq?code=cn_${stockCode}&start=${formatDate(startDate)}&end=${formatDate(today)}&stat=1&order=D&period=${period}`;
+            const prefix = isBond(stockCode) ? 'bd' : 'cn';
+            const url = `https://q.stock.sohu.com/hisHq?code=${prefix}_${stockCode}&start=${formatDate(startDate)}&end=${formatDate(today)}&stat=1&order=D&period=${period}`;
 
             const data = await loadHistory(url);
 
