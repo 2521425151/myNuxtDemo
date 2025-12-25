@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票行情查询</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+        .container { max-width: 1300px; margin: 0 auto; }
+        
+        .search-box { 
+            display: flex; 
+            gap: 12px; 
+            justify-content: center; 
+            margin-bottom: 25px; 
+            flex-wrap: wrap;
+            background: rgba(255,255,255,0.95);
+            padding: 20px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        input, select, button { 
+            padding: 12px 18px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 10px; 
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        input:focus, select:focus { 
+            outline: none; 
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.2);
+        }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper input { width: 320px; }
+        .suggestions { 
+            position: absolute; 
+            top: calc(100% + 5px); 
+            left: 0; 
+            right: 0; 
+            background: #fff; 
+            border: none;
+            border-radius: 10px; 
+            max-height: 280px; 
+            overflow-y: auto; 
+            display: none; 
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .suggestions.show { display: block; }
+        .suggestion-item { 
+            padding: 12px 16px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.2s;
+        }
+        .suggestion-item:hover { background: #f5f7ff; color: #667eea; }
+        .suggestion-item:last-child { border-bottom: none; }
+        
+        button { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 500;
+            min-width: 90px;
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+        }
+        button:disabled { 
+            background: #ccc; 
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .card { 
+            background: rgba(255,255,255,0.95); 
+            border-radius: 16px; 
+            padding: 24px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stock-info { 
+            font-size: 28px; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+        
+        .card-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 18px; 
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .card-header h2 { 
+            color: #333; 
+            font-size: 18px; 
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .copy-btn { 
+            padding: 8px 16px; 
+            font-size: 13px; 
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 8px;
+            min-width: auto;
+        }
+        .copy-btn:hover { 
+            box-shadow: 0 5px 20px rgba(17,153,142,0.4);
+        }
+        
+        .data-text { 
+            background: #f8f9fc; 
+            padding: 18px; 
+            border-radius: 12px; 
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace; 
+            font-size: 13px; 
+            line-height: 2; 
+            white-space: pre-wrap; 
+            word-break: break-all; 
+            max-height: 450px; 
+            overflow-y: auto;
+            color: #444;
+            border: 1px solid #e8e8e8;
+        }
+        .data-text::-webkit-scrollbar { width: 6px; }
+        .data-text::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        .data-text::-webkit-scrollbar-thumb:hover { background: #999; }
+        
+        .copy-all-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+        }
+        .copy-all-btn:hover {
+            box-shadow: 0 5px 25px rgba(245,87,108,0.4);
+        }
+        
+        .loading { 
+            text-align: center; 
+            padding: 50px; 
+            color: #fff;
+            font-size: 16px;
+        }
+        .error { 
+            color: #ff6b6b; 
+            text-align: center; 
+            padding: 30px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .toast { 
+            position: fixed; 
+            top: 30px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: #fff; 
+            padding: 14px 28px; 
+            border-radius: 10px; 
+            display: none; 
+            z-index: 1000;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(17,153,142,0.3);
+        }
+        
+        select {
+            background: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="search-box">
+            <div class="input-wrapper">
+                <input type="text" id="stockCode" placeholder="输入股票代码，如：300475" maxlength="6" autocomplete="off">
+                <div class="suggestions" id="suggestions"></div>
+            </div>
+            <select id="period">
+                <option value="d">日线</option>
+                <option value="w">周线</option>
+                <option value="m">月线</option>
+            </select>
+            <button id="searchBtn" onclick="queryStock()">查询</button>
+        </div>
+
+        <div class="card" id="stockInfoCard" style="display:none;">
+            <div class="stock-info" id="stockInfo"></div>
+        </div>
+
+        <div class="card" id="realtimeCard" style="display:none;">
+            <div class="card-header">
+                <h2>📊 实时行情 <span id="queryDate"></span></h2>
+                <button class="copy-btn" onclick="copyText('realtimeText')">复制</button>
+            </div>
+            <div class="data-text" id="realtimeText"></div>
+        </div>
+
+        <div class="card" id="historyCard" style="display:none;">
+            <div class="card-header">
+                <h2>📅 历史行情（近150天）</h2>
+                <button class="copy-btn" onclick="copyText('historyText')">复制</button>
+            </div>
+            <div class="data-text" id="historyText"></div>
+        </div>
+
+        <div class="card" id="copyAllCard" style="display:none;">
+            <button class="copy-all-btn" onclick="copyAll()">📋 一键复制全部数据</button>
+        </div>
+
+        <div id="message" class="loading" style="display:none;"></div>
+    </div>
+
+    <div class="toast" id="toast">✓ 已复制到剪贴板</div>
+
+    <script>
+        var realtimeCallback = null;
+        function fortune_hq(data) {
+            if (realtimeCallback) {
+                const cb = realtimeCallback;
+                realtimeCallback = null;
+                cb(data);
+            }
+        }
+
+        function loadRealtime(url) {
+            return new Promise((resolve, reject) => {
+                realtimeCallback = resolve;
+                const script = document.createElement('script');
+                script.src = url;
+                script.onload = () => script.parentNode && script.parentNode.removeChild(script);
+                script.onerror = () => {
+                    script.parentNode && script.parentNode.removeChild(script);
+                    realtimeCallback = null;
+                    reject(new Error('请求失败'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+
+        var historyCallback = null;
+        function historySearchHandler(data) {
+            if (historyCallback) {
+                const cb = historyCallback;
+                historyCallback = null;
+                cb(data);
+            }
+        }
+
+        function loadHistory(url) {
+            return new Promise((resolve, reject) => {
+                historyCallback = resolve;
+                const script = document.createElement('script');
+                script.src = url + '&callback=historySearchHandler&rt=jsonp&r=' + Math.random() + '&' + Math.random();
+                script.onload = () => script.parentNode && script.parentNode.removeChild(script);
+                script.onerror = () => {
+                    script.parentNode && script.parentNode.removeChild(script);
+                    historyCallback = null;
+                    reject(new Error('请求失败'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+
+        function formatDate(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}${m}${d}`;
+        }
+
+        function showMessage(msg, isError = false) {
+            const el = document.getElementById('message');
+            el.style.display = 'block';
+            el.className = isError ? 'error' : 'loading';
+            el.textContent = msg;
+        }
+
+        function hideMessage() {
+            document.getElementById('message').style.display = 'none';
+        }
+
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => toast.style.display = 'none', 1500);
+            });
+        }
+
+        function copyAll() {
+            const stockInfo = document.getElementById('stockInfo').textContent;
+            const realtime = document.getElementById('realtimeText').textContent;
+            const history = document.getElementById('historyText').textContent;
+            const allText = stockInfo + '\n' + realtime + '\n' + history;
+            navigator.clipboard.writeText(allText).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => toast.style.display = 'none', 1500);
+            });
+        }
+
+        const stockList = [
+            '920124-南特科技', '600201-生物股份', '300475-香浓芯创', '002249-大洋电机',
+            '000001-平安银行', '000927-中国铁物', '600547-山东黄金', '123259-锦浪转02',
+            '002202-金风科技', '118060-瑞可转债', '127087-金威转债', '118061-茂莱转债',
+            '113048-福能转债', '123188-颀中转债', '123258-今25转债', '600118-中国卫星',
+            '002151-星网宇达', '600030-中信证券', '601688-华泰证券', '000725-京东方A',
+            '688981-中芯国际', '688041-海光信息', '600760-中航沈飞', '600809-山西汾酒',
+            '600795-国电电力', '600028-中国石化', '002074-国轩高科', '601088-中国神华',
+            '600429-三元股份', '601988-中国银行', '601288-农业银行', '601398-工商银行',
+            '601939-建设银行', '601328-交通银行'
+        ];
+
+        async function queryStock() {
+            const stockCode = document.getElementById('stockCode').value.trim();
+            const period = document.getElementById('period').value;
+            
+            if (!stockCode || !/^\d{6}$/.test(stockCode)) {
+                showMessage('请输入正确的6位股票代码', true);
+                return;
+            }
+
+            const btn = document.getElementById('searchBtn');
+            btn.disabled = true;
+            btn.textContent = '查询中...';
+            showMessage('正在获取数据...');
+
+            document.getElementById('realtimeCard').style.display = 'none';
+            document.getElementById('historyCard').style.display = 'none';
+            document.getElementById('copyAllCard').style.display = 'none';
+            document.getElementById('stockInfoCard').style.display = 'none';
+
+            try {
+                await fetchRealtimeData(stockCode);
+                await fetchHistoryData(stockCode, period);
+                hideMessage();
+            } catch (error) {
+                showMessage('查询失败: ' + error.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '查询';
+            }
+        }
+
+        async function fetchRealtimeData(stockCode) {
+            const suffix = stockCode.slice(-3);
+            const timestamp = Date.now();
+            const url = `https://hq.stock.sohu.com/cn/${suffix}/cn_${stockCode}-1.html?_=${timestamp}`;
+
+            const data = await loadRealtime(url);
+
+            if (!data || !data.price_A1 || !data.price_A2) {
+                throw new Error('无法解析实时数据');
+            }
+
+            const price_A1 = data.price_A1;
+            const price_A2 = data.price_A2;
+            const price_A3 = data.price_A3 || [];
+
+            const today = new Date();
+            const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+            const text = `日期：${dateStr}，今开：${price_A2[3]}，盘中：${price_A1[2]}，最低：${price_A2[7]}，最高：${price_A2[5]}，成交量：${price_A3[2] || '--'}，换手率：${price_A2[6]}，量比：${price_A2[4]}，市盈率：${price_A2[10]}，均价：${price_A2[0]}，涨停：${price_A2[9]}，跌停：${price_A2[11]}`;
+
+            const stockName = price_A1[1];
+            const stockCodeFromApi = price_A1[0].split('_')[1];
+
+            document.getElementById('stockInfo').textContent = `${stockName}（${stockCodeFromApi}）`;
+            document.getElementById('stockInfoCard').style.display = 'block';
+
+            document.getElementById('queryDate').textContent = `（${dateStr}）`;
+            document.getElementById('realtimeText').textContent = text;
+            document.getElementById('realtimeCard').style.display = 'block';
+        }
+
+        async function fetchHistoryData(stockCode, period) {
+            const today = new Date();
+            const startDate = new Date(today);
+            startDate.setDate(startDate.getDate() - 150);
+
+            const url = `https://q.stock.sohu.com/hisHq?code=cn_${stockCode}&start=${formatDate(startDate)}&end=${formatDate(today)}&stat=1&order=D&period=${period}`;
+
+            const data = await loadHistory(url);
+
+            if (!data || !data[0] || !data[0].hq) {
+                throw new Error('无法获取历史数据');
+            }
+
+            const hq = data[0].hq;
+            const lines = hq.map(row => {
+                return `日期：${row[0]}，开盘：${row[1]}，收盘：${row[2]}，涨跌额：${row[3]}，涨跌幅：${row[4]}，最低：${row[5]}，最高：${row[6]}，成交量(手)：${row[7]}，成交金额(万)：${row[8]}，换手率：${row[9]}`;
+            });
+
+            document.getElementById('historyText').textContent = lines.join('\n');
+            document.getElementById('historyCard').style.display = 'block';
+            document.getElementById('copyAllCard').style.display = 'block';
+        }
+
+        const stockInput = document.getElementById('stockCode');
+        const suggestionsEl = document.getElementById('suggestions');
+
+        stockInput.addEventListener('focus', () => showSuggestions(''));
+        stockInput.addEventListener('input', (e) => showSuggestions(e.target.value));
+        stockInput.addEventListener('blur', () => setTimeout(() => suggestionsEl.classList.remove('show'), 200));
+        stockInput.addEventListener('keypress', e => { if (e.key === 'Enter') queryStock(); });
+
+        function showSuggestions(keyword) {
+            const filtered = keyword ? stockList.filter(s => s.includes(keyword)) : stockList;
+            if (filtered.length === 0) {
+                suggestionsEl.classList.remove('show');
+                return;
+            }
+            suggestionsEl.innerHTML = filtered.map(s => 
+                `<div class="suggestion-item" onclick="selectStock('${s}')">${s}</div>`
+            ).join('');
+            suggestionsEl.classList.add('show');
+        }
+
+        function selectStock(stock) {
+            stockInput.value = stock.split('-')[0];
+            suggestionsEl.classList.remove('show');
+        }
+    </script>
+</body>
+
+</html>
