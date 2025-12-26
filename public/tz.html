@@ -123,6 +123,11 @@
             gap: 8px;
         }
         
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+        
         .copy-btn { 
             padding: 8px 16px; 
             font-size: 13px; 
@@ -132,6 +137,17 @@
         }
         .copy-btn:hover { 
             box-shadow: 0 5px 20px rgba(17,153,142,0.4);
+        }
+        
+        .refresh-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            min-width: auto;
+        }
+        .refresh-btn:hover {
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
         }
         
         .data-text { 
@@ -363,6 +379,12 @@
                 <option value="w">周线</option>
                 <option value="m">月线</option>
             </select>
+            <select id="days">
+                <option value="30">近30天</option>
+                <option value="60">近60天</option>
+                <option value="120">近120天</option>
+                <option value="150" selected>近150天</option>
+            </select>
             <button id="searchBtn" onclick="queryStock()">查询</button>
         </div>
 
@@ -373,14 +395,17 @@
         <div class="card" id="realtimeCard" style="display:none;">
             <div class="card-header">
                 <h2>📊 实时行情 <span id="queryDate"></span></h2>
-                <button class="copy-btn" onclick="copyText('realtimeText')">复制</button>
+                <div class="btn-group">
+                    <button class="refresh-btn" onclick="refreshRealtime()">刷新</button>
+                    <button class="copy-btn" onclick="copyText('realtimeText')">复制</button>
+                </div>
             </div>
             <div class="data-text" id="realtimeText"></div>
         </div>
 
         <div class="card" id="historyCard" style="display:none;">
             <div class="card-header">
-                <h2>📅 历史行情（近150天）</h2>
+                <h2>📅 历史行情（近<span id="daysLabel">150</span>天）</h2>
                 <button class="copy-btn" onclick="copyText('historyText')">复制</button>
             </div>
             <div class="data-text" id="historyText"></div>
@@ -476,12 +501,66 @@
             document.getElementById('message').style.display = 'none';
         }
 
+        // 兼容移动端的复制功能
+        function copyToClipboard(text) {
+            return new Promise((resolve, reject) => {
+                // 优先使用现代 Clipboard API
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(text).then(resolve).catch(() => {
+                        // 如果失败，回退到传统方法
+                        fallbackCopy(text) ? resolve() : reject();
+                    });
+                } else {
+                    // 使用传统方法（兼容旧浏览器和移动端）
+                    fallbackCopy(text) ? resolve() : reject();
+                }
+            });
+        }
+
+        // 传统复制方法（兼容性更好）
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.cssText = 'position:fixed;top:0;left:0;width:2em;height:2em;padding:0;border:none;outline:none;box-shadow:none;background:transparent;';
+            document.body.appendChild(textarea);
+            
+            // iOS 需要特殊处理
+            if (navigator.userAgent.match(/ipad|iphone/i)) {
+                textarea.contentEditable = true;
+                textarea.readOnly = false;
+                const range = document.createRange();
+                range.selectNodeContents(textarea);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                textarea.setSelectionRange(0, 999999);
+            } else {
+                textarea.select();
+            }
+            
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+            } catch (e) {
+                success = false;
+            }
+            document.body.removeChild(textarea);
+            return success;
+        }
+
+        function showToast(message = '✓ 已复制到剪贴板') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 1500);
+        }
+
         function copyText(elementId) {
             const text = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('toast');
-                toast.style.display = 'block';
-                setTimeout(() => toast.style.display = 'none', 1500);
+            copyToClipboard(text).then(() => {
+                showToast();
+            }).catch(() => {
+                showToast('复制失败，请手动复制');
             });
         }
 
@@ -490,11 +569,26 @@
             const realtime = document.getElementById('realtimeText').textContent;
             const history = document.getElementById('historyText').textContent;
             const allText = stockInfo + '\n' + realtime + '\n' + history;
-            navigator.clipboard.writeText(allText).then(() => {
-                const toast = document.getElementById('toast');
-                toast.style.display = 'block';
-                setTimeout(() => toast.style.display = 'none', 1500);
+            copyToClipboard(allText).then(() => {
+                showToast();
+            }).catch(() => {
+                showToast('复制失败，请手动复制');
             });
+        }
+
+        // 单独刷新实时行情
+        async function refreshRealtime() {
+            const stockCode = document.getElementById('stockCode').value.trim();
+            if (!stockCode) {
+                showToast('请先输入股票代码');
+                return;
+            }
+            try {
+                await fetchRealtimeData(stockCode);
+                showToast('✓ 实时行情已更新');
+            } catch (error) {
+                showToast('刷新失败：' + error.message);
+            }
         }
 
         const stockList = [
@@ -1904,9 +1998,10 @@
         }
 
         async function fetchHistoryData(stockCode, period) {
+            const days = parseInt(document.getElementById('days').value);
             const today = new Date();
             const startDate = new Date(today);
-            startDate.setDate(startDate.getDate() - 150);
+            startDate.setDate(startDate.getDate() - days);
 
             const prefix = isBond(stockCode) ? 'bd' : 'cn';
             const url = `https://q.stock.sohu.com/hisHq?code=${prefix}_${stockCode}&start=${formatDate(startDate)}&end=${formatDate(today)}&stat=1&order=D&period=${period}`;
@@ -1922,6 +2017,7 @@
                 return `日期：${row[0]}，开盘：${row[1]}，收盘：${row[2]}，涨跌额：${row[3]}，涨跌幅：${row[4]}，最低：${row[5]}，最高：${row[6]}，成交量(手)：${row[7]}，成交金额(万)：${row[8]}，换手率：${row[9]}`;
             });
 
+            document.getElementById('daysLabel').textContent = days;
             document.getElementById('historyText').textContent = lines.join('\n');
             document.getElementById('historyCard').style.display = 'block';
             document.getElementById('copyAllCard').style.display = 'block';
