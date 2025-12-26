@@ -126,7 +126,85 @@
         .btn-group {
             display: flex;
             gap: 8px;
+            align-items: center;
         }
+        
+        .mode-switch {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 6px;
+            padding: 2px;
+        }
+        .mode-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            background: transparent;
+            border-radius: 4px;
+            color: #666;
+            min-width: auto;
+        }
+        .mode-btn:hover {
+            background: rgba(102,126,234,0.1);
+            transform: none;
+            box-shadow: none;
+        }
+        .mode-btn.active {
+            background: #fff;
+            color: #667eea;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .data-preview {
+            background: #f8f9fc;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #e8e8e8;
+            max-height: 450px;
+            overflow: auto;
+        }
+        .data-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .data-preview th,
+        .data-preview td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e8e8e8;
+            white-space: nowrap;
+        }
+        .data-preview th {
+            background: #f0f2f5;
+            color: #666;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+        }
+        .data-preview td {
+            color: #333;
+        }
+        .data-preview tr:hover td {
+            background: #f5f7ff;
+        }
+        .data-preview .up { color: #e74c3c; }
+        .data-preview .down { color: #27ae60; }
+        
+        /* 黑色主题下的模式切换和预览 */
+        .theme-dark .mode-switch { background: #3a3a5a; }
+        .theme-dark .mode-btn { color: #9090a0; }
+        .theme-dark .mode-btn:hover { background: rgba(102,126,234,0.2); }
+        .theme-dark .mode-btn.active { background: #2a2a4a; color: #a0a0ff; }
+        .theme-dark .data-preview { background: #1a1a2e; border-color: #3a3a5a; }
+        .theme-dark .data-preview th { background: #2a2a4a; color: #9090a0; }
+        .theme-dark .data-preview td { color: #c0c0c0; border-color: #3a3a5a; }
+        .theme-dark .data-preview tr:hover td { background: #2a2a4a; }
+        
+        /* 白色主题下的模式切换和预览 */
+        .theme-light .mode-switch { background: #e8e8e8; }
+        .theme-light .mode-btn.active { color: #4a90d9; }
+        .theme-light .data-preview { background: #f8fafc; border-color: #e2e8f0; }
+        .theme-light .data-preview th { background: #f1f5f9; color: #64748b; }
         
         .copy-btn { 
             padding: 8px 16px; 
@@ -174,9 +252,21 @@
             font-size: 16px;
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             border-radius: 12px;
+            margin-bottom: 10px;
         }
         .copy-all-btn:hover {
             box-shadow: 0 5px 25px rgba(245,87,108,0.4);
+        }
+        
+        .ai-btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 12px;
+        }
+        .ai-btn:hover {
+            box-shadow: 0 5px 25px rgba(99,102,241,0.4);
         }
         
         .loading { 
@@ -357,6 +447,132 @@
         .theme-light .toast {
             background: linear-gradient(135deg, #0ea5a0 0%, #2dd4bf 100%);
         }
+        
+        /* 移动端响应式 */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 15px 10px;
+            }
+            
+            .theme-switcher {
+                top: 10px;
+                right: 10px;
+                padding: 6px 10px;
+            }
+            .theme-btn {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .search-box {
+                padding: 15px;
+                gap: 10px;
+                flex-direction: column;
+            }
+            .input-wrapper {
+                width: 100%;
+            }
+            .input-wrapper input {
+                width: 100%;
+            }
+            .search-box select {
+                width: 100%;
+            }
+            .search-box button {
+                width: 100%;
+            }
+            
+            .card {
+                padding: 15px;
+                border-radius: 12px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .card-header h2 {
+                font-size: 16px;
+            }
+            .btn-group {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .mode-switch {
+                flex: 1;
+            }
+            .mode-btn {
+                flex: 1;
+                text-align: center;
+            }
+            .refresh-btn,
+            .copy-btn {
+                flex: 1;
+                padding: 10px 12px;
+            }
+            
+            .stock-info {
+                font-size: 22px;
+            }
+            
+            .data-preview {
+                padding: 8px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .data-preview table {
+                font-size: 12px;
+            }
+            .data-preview th,
+            .data-preview td {
+                padding: 6px 8px;
+            }
+            
+            .data-text {
+                padding: 12px;
+                font-size: 12px;
+                line-height: 1.8;
+            }
+            
+            .copy-all-btn,
+            .ai-btn {
+                padding: 14px;
+                font-size: 15px;
+            }
+            
+            .toast {
+                top: 20px;
+                left: 10px;
+                right: 10px;
+                transform: none;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .suggestions {
+                max-height: 200px;
+            }
+            .suggestion-item {
+                padding: 10px 14px;
+            }
+        }
+        
+        /* 小屏手机 */
+        @media screen and (max-width: 375px) {
+            .stock-info {
+                font-size: 18px;
+            }
+            .card-header h2 {
+                font-size: 14px;
+            }
+            .data-preview table {
+                font-size: 11px;
+            }
+            .data-preview th,
+            .data-preview td {
+                padding: 5px 6px;
+            }
+        }
     </style>
 </head>
 
@@ -396,23 +612,36 @@
             <div class="card-header">
                 <h2>📊 实时行情 <span id="queryDate"></span></h2>
                 <div class="btn-group">
+                    <div class="mode-switch">
+                        <button class="mode-btn active" onclick="switchMode('realtime', 'preview')" data-mode="preview">预览</button>
+                        <button class="mode-btn" onclick="switchMode('realtime', 'copy')" data-mode="copy">复制</button>
+                    </div>
                     <button class="refresh-btn" onclick="refreshRealtime()">刷新</button>
-                    <button class="copy-btn" onclick="copyText('realtimeText')">复制</button>
+                    <button class="copy-btn" onclick="copyText('realtimeCopyText')">复制</button>
                 </div>
             </div>
-            <div class="data-text" id="realtimeText"></div>
+            <div class="data-preview" id="realtimePreview"></div>
+            <div class="data-text" id="realtimeCopyText" style="display:none;"></div>
         </div>
 
         <div class="card" id="historyCard" style="display:none;">
             <div class="card-header">
                 <h2>📅 历史行情（近<span id="daysLabel">150</span>天）</h2>
-                <button class="copy-btn" onclick="copyText('historyText')">复制</button>
+                <div class="btn-group">
+                    <div class="mode-switch">
+                        <button class="mode-btn active" onclick="switchMode('history', 'preview')" data-mode="preview">预览</button>
+                        <button class="mode-btn" onclick="switchMode('history', 'copy')" data-mode="copy">复制</button>
+                    </div>
+                    <button class="copy-btn" onclick="copyText('historyCopyText')">复制</button>
+                </div>
             </div>
-            <div class="data-text" id="historyText"></div>
+            <div class="data-preview" id="historyPreview"></div>
+            <div class="data-text" id="historyCopyText" style="display:none;"></div>
         </div>
 
         <div class="card" id="copyAllCard" style="display:none;">
             <button class="copy-all-btn" onclick="copyAll()">📋 一键复制全部数据</button>
+            <button class="ai-btn" onclick="copyAndOpenAI()">🤖 复制并打开通义分析</button>
         </div>
 
         <div id="message" class="loading" style="display:none;"></div>
@@ -555,6 +784,34 @@
             setTimeout(() => toast.style.display = 'none', 1500);
         }
 
+        // 模式切换
+        function switchMode(type, mode) {
+            const card = document.getElementById(type === 'realtime' ? 'realtimeCard' : 'historyCard');
+            const preview = document.getElementById(type === 'realtime' ? 'realtimePreview' : 'historyPreview');
+            const copyText = document.getElementById(type === 'realtime' ? 'realtimeCopyText' : 'historyCopyText');
+            
+            card.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            
+            if (mode === 'preview') {
+                preview.style.display = 'block';
+                copyText.style.display = 'none';
+            } else {
+                preview.style.display = 'none';
+                copyText.style.display = 'block';
+            }
+        }
+
+        // 格式化涨跌样式
+        function formatChange(value) {
+            const num = parseFloat(value);
+            if (isNaN(num)) return value;
+            if (num > 0) return `<span class="up">+${value}</span>`;
+            if (num < 0) return `<span class="down">${value}</span>`;
+            return value;
+        }
+
         function copyText(elementId) {
             const text = document.getElementById(elementId).textContent;
             copyToClipboard(text).then(() => {
@@ -566,8 +823,8 @@
 
         function copyAll() {
             const stockInfo = document.getElementById('stockInfo').textContent;
-            const realtime = document.getElementById('realtimeText').textContent;
-            const history = document.getElementById('historyText').textContent;
+            const realtime = document.getElementById('realtimeCopyText').textContent;
+            const history = document.getElementById('historyCopyText').textContent;
             const allText = stockInfo + '\n' + realtime + '\n' + history;
             copyToClipboard(allText).then(() => {
                 showToast();
@@ -589,6 +846,24 @@
             } catch (error) {
                 showToast('刷新失败：' + error.message);
             }
+        }
+
+        // 复制数据并打开通义分析
+        function copyAndOpenAI() {
+            const stockInfo = document.getElementById('stockInfo').textContent;
+            const realtime = document.getElementById('realtimeCopyText').textContent;
+            const history = document.getElementById('historyCopyText').textContent;
+            const prompt = '根据以上数据分析，接下来应该怎样操作？请给出买入、持有或卖出的建议，并说明理由。';
+            const allText = stockInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
+            
+            copyToClipboard(allText).then(() => {
+                showToast('✓ 已复制，正在打开通义...');
+                setTimeout(() => {
+                    window.open('https://tongyi.aliyun.com/qianwen/', '_blank');
+                }, 500);
+            }).catch(() => {
+                showToast('复制失败，请手动复制');
+            });
         }
 
         const stockList = [
@@ -1984,7 +2259,28 @@
             const today = new Date();
             const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
+            // 复制模式文本
             const text = `日期：${dateStr}，今开：${price_A2[3]}，盘中：${price_A1[2]}，最低：${price_A2[7]}，最高：${price_A2[5]}，成交量：${price_A3[2] || '--'}，换手率：${price_A2[6]}，量比：${price_A2[4]}，市盈率：${price_A2[10]}，均价：${price_A2[0]}，涨停：${price_A2[9]}，跌停：${price_A2[11]}`;
+
+            // 预览模式表格
+            const previewHtml = `
+                <table>
+                    <tr><th>日期</th><th>今开</th><th>盘中</th><th>最低</th><th>最高</th><th>成交量</th><th>换手率</th><th>量比</th><th>市盈率</th><th>均价</th><th>涨停</th><th>跌停</th></tr>
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${price_A2[3]}</td>
+                        <td>${price_A1[2]}</td>
+                        <td>${price_A2[7]}</td>
+                        <td>${price_A2[5]}</td>
+                        <td>${price_A3[2] || '--'}</td>
+                        <td>${price_A2[6]}</td>
+                        <td>${price_A2[4]}</td>
+                        <td>${price_A2[10]}</td>
+                        <td>${price_A2[0]}</td>
+                        <td class="up">${price_A2[9]}</td>
+                        <td class="down">${price_A2[11]}</td>
+                    </tr>
+                </table>`;
 
             const stockName = price_A1[1];
             const stockCodeFromApi = price_A1[0].split('_')[1];
@@ -1993,7 +2289,8 @@
             document.getElementById('stockInfoCard').style.display = 'block';
 
             document.getElementById('queryDate').textContent = `（${dateStr}）`;
-            document.getElementById('realtimeText').textContent = text;
+            document.getElementById('realtimePreview').innerHTML = previewHtml;
+            document.getElementById('realtimeCopyText').textContent = text;
             document.getElementById('realtimeCard').style.display = 'block';
         }
 
@@ -2013,12 +2310,37 @@
             }
 
             const hq = data[0].hq;
+            
+            // 复制模式文本
             const lines = hq.map(row => {
                 return `日期：${row[0]}，开盘：${row[1]}，收盘：${row[2]}，涨跌额：${row[3]}，涨跌幅：${row[4]}，最低：${row[5]}，最高：${row[6]}，成交量(手)：${row[7]}，成交金额(万)：${row[8]}，换手率：${row[9]}`;
             });
 
+            // 预览模式表格
+            const tableRows = hq.map(row => {
+                return `<tr>
+                    <td>${row[0]}</td>
+                    <td>${row[1]}</td>
+                    <td>${row[2]}</td>
+                    <td>${formatChange(row[3])}</td>
+                    <td>${formatChange(row[4])}</td>
+                    <td>${row[5]}</td>
+                    <td>${row[6]}</td>
+                    <td>${row[7]}</td>
+                    <td>${row[8]}</td>
+                    <td>${row[9]}</td>
+                </tr>`;
+            }).join('');
+
+            const previewHtml = `
+                <table>
+                    <tr><th>日期</th><th>开盘</th><th>收盘</th><th>涨跌额</th><th>涨跌幅</th><th>最低</th><th>最高</th><th>成交量(手)</th><th>成交金额(万)</th><th>换手率</th></tr>
+                    ${tableRows}
+                </table>`;
+
             document.getElementById('daysLabel').textContent = days;
-            document.getElementById('historyText').textContent = lines.join('\n');
+            document.getElementById('historyPreview').innerHTML = previewHtml;
+            document.getElementById('historyCopyText').textContent = lines.join('\n');
             document.getElementById('historyCard').style.display = 'block';
             document.getElementById('copyAllCard').style.display = 'block';
         }
