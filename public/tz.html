@@ -574,10 +574,11 @@
             }
             .holding-inputs {
                 width: 100%;
+                flex-direction: column;
             }
             .holding-inputs input {
                 flex: 1;
-                width: auto;
+                width: 100%;
             }
             
             .card {
@@ -705,8 +706,8 @@
                 <option value="yes">持股</option>
             </select>
             <div class="holding-inputs" id="holdingInputs" style="display:none;">
-                <input type="number" id="costPrice" placeholder="成本价" step="0.01" min="0">
-                <input type="number" id="positionPercent" placeholder="仓位(%)" step="0.1" min="0" max="100">
+                <input type="number" id="costPrice" placeholder="成本价，例如：8.88" step="0.01" min="0">
+                <input type="number" id="positionPercent" placeholder="仓位(%)，例如：10" step="0.1" min="0" max="100">
             </div>
             <button id="searchBtn" onclick="queryStock()">查询</button>
             <!-- 主题切换器（移动端） -->
@@ -967,7 +968,8 @@
             const holdingInfo = getHoldingInfoText();
             const realtime = document.getElementById('realtimeCopyText').textContent;
             const history = document.getElementById('historyCopyText').textContent;
-            const allText = stockInfo + holdingInfo + '\n' + realtime + '\n' + history;
+            const prompt = '根据以上数据分析，接下来应该怎样操作？请给出买入、持有或卖出的建议，并说明理由。';
+            const allText = stockInfo + holdingInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
             copyToClipboard(allText).then(() => {
                 showToast();
             }).catch(() => {
