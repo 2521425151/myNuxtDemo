@@ -315,6 +315,15 @@
             padding-right: 36px;
         }
         
+        /* 持股输入框 */
+        .holding-inputs {
+            display: flex;
+            gap: 8px;
+        }
+        .holding-inputs input {
+            width: 200px;
+        }
+        
         /* 主题切换器 */
         .theme-switcher {
             position: fixed;
@@ -563,6 +572,13 @@
             .search-box button {
                 width: 100%;
             }
+            .holding-inputs {
+                width: 100%;
+            }
+            .holding-inputs input {
+                flex: 1;
+                width: auto;
+            }
             
             .card {
                 padding: 15px;
@@ -684,6 +700,14 @@
                 <option value="120">近120天</option>
                 <option value="150" selected>近150天</option>
             </select>
+            <select id="holdingStatus" onchange="toggleHoldingInputs()">
+                <option value="no">未持股</option>
+                <option value="yes">持股</option>
+            </select>
+            <div class="holding-inputs" id="holdingInputs" style="display:none;">
+                <input type="number" id="costPrice" placeholder="成本价" step="0.01" min="0">
+                <input type="number" id="positionPercent" placeholder="仓位(%)" step="0.1" min="0" max="100">
+            </div>
             <button id="searchBtn" onclick="queryStock()">查询</button>
             <!-- 主题切换器（移动端） -->
             <div class="theme-switcher theme-switcher-mobile">
@@ -874,6 +898,33 @@
             setTimeout(() => toast.style.display = 'none', 1500);
         }
 
+        // 持股选项切换
+        function toggleHoldingInputs() {
+            const holdingStatus = document.getElementById('holdingStatus').value;
+            const holdingInputs = document.getElementById('holdingInputs');
+            holdingInputs.style.display = holdingStatus === 'yes' ? 'flex' : 'none';
+            if (holdingStatus === 'no') {
+                document.getElementById('costPrice').value = '';
+                document.getElementById('positionPercent').value = '';
+            }
+        }
+
+        // 获取持股信息文本
+        function getHoldingInfoText() {
+            const holdingStatus = document.getElementById('holdingStatus').value;
+            if (holdingStatus !== 'yes') return '';
+            
+            const costPrice = document.getElementById('costPrice').value;
+            const positionPercent = document.getElementById('positionPercent').value;
+            
+            if (!costPrice && !positionPercent) return '';
+            
+            let info = '\n';
+            if (costPrice) info += '成本价：' + costPrice + '\n';
+            if (positionPercent) info += '仓位：' + positionPercent + '%\n';
+            return info;
+        }
+
         // 模式切换
         function switchMode(type, mode) {
             const card = document.getElementById(type === 'realtime' ? 'realtimeCard' : 'historyCard');
@@ -913,9 +964,10 @@
 
         function copyAll() {
             const stockInfo = document.getElementById('stockInfo').textContent;
+            const holdingInfo = getHoldingInfoText();
             const realtime = document.getElementById('realtimeCopyText').textContent;
             const history = document.getElementById('historyCopyText').textContent;
-            const allText = stockInfo + '\n' + realtime + '\n' + history;
+            const allText = stockInfo + holdingInfo + '\n' + realtime + '\n' + history;
             copyToClipboard(allText).then(() => {
                 showToast();
             }).catch(() => {
@@ -941,10 +993,11 @@
         // 复制数据并打开通义分析
         function copyAndOpenAI() {
             const stockInfo = document.getElementById('stockInfo').textContent;
+            const holdingInfo = getHoldingInfoText();
             const realtime = document.getElementById('realtimeCopyText').textContent;
             const history = document.getElementById('historyCopyText').textContent;
             const prompt = '根据以上数据分析，接下来应该怎样操作？请给出买入、持有或卖出的建议，并说明理由。';
-            const allText = stockInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
+            const allText = stockInfo + holdingInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
             
             copyToClipboard(allText).then(() => {
                 showToast('✓ 已复制，正在打开通义...');
