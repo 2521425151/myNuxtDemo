@@ -913,14 +913,14 @@
         // 获取持股信息文本
         function getHoldingInfoText() {
             const holdingStatus = document.getElementById('holdingStatus').value;
-            if (holdingStatus !== 'yes') return '';
+            if (holdingStatus !== 'yes') return '\n未持股\n';
             
             const costPrice = document.getElementById('costPrice').value;
             const positionPercent = document.getElementById('positionPercent').value;
             
             if (!costPrice && !positionPercent) return '';
             
-            let info = '\n';
+            let info = '\n已持股\n';
             if (costPrice) info += '成本价：' + costPrice + '\n';
             if (positionPercent) info += '仓位：' + positionPercent + '%\n';
             return info;
@@ -968,7 +968,8 @@
             const holdingInfo = getHoldingInfoText();
             const realtime = document.getElementById('realtimeCopyText').textContent;
             const history = document.getElementById('historyCopyText').textContent;
-            const prompt = '根据以上数据分析，接下来应该怎样操作？请给出买入、持有或卖出的建议，并说明理由。';
+            const holdingStatus = document.getElementById('holdingStatus').value;
+            const prompt = holdingStatus === 'yes' ? '根据以下数据分析，接下来应该怎样操作？请给出持有或卖出或加仓或减仓的建议，并说明理由。' : '根据以下数据分析，接下来应该怎样操作？请给出买入的建议，并说明理由。';
             const allText = stockInfo + holdingInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
             copyToClipboard(allText).then(() => {
                 showToast();
@@ -998,7 +999,8 @@
             const holdingInfo = getHoldingInfoText();
             const realtime = document.getElementById('realtimeCopyText').textContent;
             const history = document.getElementById('historyCopyText').textContent;
-            const prompt = '根据以上数据分析，接下来应该怎样操作？请给出买入、持有或卖出的建议，并说明理由。';
+            const holdingStatus = document.getElementById('holdingStatus').value;
+            const prompt = holdingStatus === 'yes' ? '根据以下数据分析，接下来应该怎样操作？请给出持有或卖出或加仓或减仓的建议，并说明理由。' : '根据以下数据分析，接下来应该怎样操作？请给出买入的建议，并说明理由。';
             const allText = stockInfo + holdingInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
             
             copyToClipboard(allText).then(() => {
