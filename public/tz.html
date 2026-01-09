@@ -913,14 +913,14 @@
         // 获取持股信息文本
         function getHoldingInfoText() {
             const holdingStatus = document.getElementById('holdingStatus').value;
-            if (holdingStatus !== 'yes') return '\n未持股\n';
+            if (holdingStatus !== 'yes') return '\n未持有此股票\n';
             
             const costPrice = document.getElementById('costPrice').value;
             const positionPercent = document.getElementById('positionPercent').value;
             
             if (!costPrice && !positionPercent) return '';
             
-            let info = '\n已持股\n';
+            let info = '\n已持有此股票\n';
             if (costPrice) info += '成本价：' + costPrice + '\n';
             if (positionPercent) info += '仓位：' + positionPercent + '%\n';
             return info;
@@ -969,7 +969,7 @@
             const realtime = document.getElementById('realtimeCopyText').textContent;
             const history = document.getElementById('historyCopyText').textContent;
             const holdingStatus = document.getElementById('holdingStatus').value;
-            const prompt = holdingStatus === 'yes' ? '根据以下数据分析，接下来应该怎样操作？请给出持有或卖出或加仓或减仓的建议，并说明理由。' : '根据以下数据分析，接下来应该怎样操作？请给出买入的建议，并说明理由。';
+            const prompt = '先分析一下股票本身，再根据以下数据的分析趋势，给出接下来应该怎样操作？并详细的说明理由。';
             const allText = stockInfo + holdingInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
             copyToClipboard(allText).then(() => {
                 showToast();
