@@ -986,8 +986,10 @@
                 return;
             }
             try {
-                await fetchRealtimeData(stockCode);
-                showToast('✓ 实时行情已更新');
+                const rt = await fetchRealtimeData(stockCode);
+                if (rt.ok) {
+                    showToast('✓ 实时行情已更新');
+                }
             } catch (error) {
                 showToast('刷新失败：' + error.message);
             }
@@ -2371,8 +2373,8 @@
             document.getElementById('stockInfoCard').style.display = 'none';
 
             try {
-                await fetchRealtimeData(stockCode);
-                await fetchHistoryData(stockCode, period);
+                const rt = await fetchRealtimeData(stockCode);
+                await fetchHistoryData(stockCode, period, rt.ok ? rt.hqPrefix : undefined);
                 hideMessage();
             } catch (error) {
                 showMessage('查询失败: ' + error.message, true);
@@ -2389,14 +2391,32 @@
 
         async function fetchRealtimeData(stockCode) {
             const suffix = stockCode.slice(-3);
-            const timestamp = Date.now();
-            const prefix = isBond(stockCode) ? 'bd' : 'cn';
-            const url = `https://hq.stock.sohu.com/${prefix}/${suffix}/${prefix}_${stockCode}-1.html?_=${timestamp}`;
 
-            const data = await loadRealtime(url);
+            async function tryPrefix(prefix) {
+                const url = `https://hq.stock.sohu.com/${prefix}/${suffix}/${prefix}_${stockCode}-1.html?_=${Date.now()}`;
+                try {
+                    const data = await loadRealtime(url);
+                    if (!data || !data.price_A1 || !data.price_A2) {
+                        return null;
+                    }
+                    return data;
+                } catch (e) {
+                    return null;
+                }
+            }
 
-            if (!data || !data.price_A1 || !data.price_A2) {
-                throw new Error('无法解析实时数据');
+            const initialPrefix = isBond(stockCode) ? 'bd' : 'cn';
+            let data = await tryPrefix(initialPrefix);
+            let resolvedPrefix = data ? initialPrefix : null;
+            if (!data && initialPrefix === 'bd') {
+                data = await tryPrefix('cn');
+                if (data) {
+                    resolvedPrefix = 'cn';
+                }
+            }
+
+            if (!data) {
+                return { ok: false };
             }
 
             const price_A1 = data.price_A1;
@@ -2439,15 +2459,16 @@
             document.getElementById('realtimePreview').innerHTML = previewHtml;
             document.getElementById('realtimeCopyText').textContent = text;
             document.getElementById('realtimeCard').style.display = 'block';
+            return { ok: true, hqPrefix: resolvedPrefix };
         }
 
-        async function fetchHistoryData(stockCode, period) {
+        async function fetchHistoryData(stockCode, period, hqPrefixOverride) {
             const days = parseInt(document.getElementById('days').value);
             const today = new Date();
             const startDate = new Date(today);
             startDate.setDate(startDate.getDate() - days);
 
-            const prefix = isBond(stockCode) ? 'bd' : 'cn';
+            const prefix = hqPrefixOverride !== undefined ? hqPrefixOverride : (isBond(stockCode) ? 'bd' : 'cn');
             const url = `https://q.stock.sohu.com/hisHq?code=${prefix}_${stockCode}&start=${formatDate(startDate)}&end=${formatDate(today)}&stat=1&order=D&period=${period}`;
 
             const data = await loadHistory(url);
