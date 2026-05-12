@@ -212,7 +212,7 @@
         
         .btn-outline {
             background: #fff;
-            color: #667eea;
+            color: #727272;
             border: 2px solid #667eea;
             box-shadow: none;
         }
@@ -226,7 +226,7 @@
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.45);
-            z-index: 900;
+            z-index: 1100;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -234,6 +234,8 @@
             backdrop-filter: blur(4px);
         }
         .index-modal {
+            position: relative;
+            z-index: 1;
             background: rgba(255, 255, 255, 0.98);
             border-radius: 16px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
@@ -903,6 +905,14 @@
         /** 最近一次成功拉取实时行情时的代码与前缀，用于刷新时与输入框修改区分 */
         var lastQuotedState = { code: null, prefix: null };
 
+        /** 无歧义的指数快捷代码。000001 同时为平安银行 A 股代码，若按代码判指数会与个股冲突，上证请仅以 zs 前缀判定（大盘指数入口）。 */
+        var INDEX_CODES = new Set(['399001', '899050']);
+        function isIndexQuery() {
+            var code = document.getElementById('stockCode').value.trim();
+            if (INDEX_CODES.has(code)) return true;
+            return !!(lastQuotedState && lastQuotedState.code === code && lastQuotedState.prefix === 'zs');
+        }
+
         function openIndexModal() {
             document.getElementById('indexModalOverlay').style.display = 'flex';
         }
@@ -1050,6 +1060,7 @@
 
         // 获取持股信息文本
         function getHoldingInfoText() {
+            if (isIndexQuery()) return '';
             const holdingStatus = document.getElementById('holdingStatus').value;
             if (holdingStatus !== 'yes') return '\n未持有此股票\n';
             
@@ -1106,8 +1117,9 @@
             const holdingInfo = getHoldingInfoText();
             const realtime = document.getElementById('realtimeCopyText').textContent;
             const history = document.getElementById('historyCopyText').textContent;
-            const holdingStatus = document.getElementById('holdingStatus').value;
-            const prompt = '先分析一下股票本身，再根据以下数据的分析趋势，给出接下来应该怎样操作？并详细的说明理由。';
+            const prompt = isIndexQuery()
+                ? '根据以下数据分析指数'
+                : '先分析一下股票本身，再根据以下数据的分析趋势，给出接下来应该怎样操作？并详细的说明理由。';
             const allText = stockInfo + holdingInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
             copyToClipboard(allText).then(() => {
                 showToast();
@@ -1144,7 +1156,11 @@
             const realtime = document.getElementById('realtimeCopyText').textContent;
             const history = document.getElementById('historyCopyText').textContent;
             const holdingStatus = document.getElementById('holdingStatus').value;
-            const prompt = holdingStatus === 'yes' ? '根据以下数据分析，接下来应该怎样操作？请给出持有或卖出或加仓或减仓的建议，并说明理由。' : '根据以下数据分析，接下来应该怎样操作？请给出买入的建议，并说明理由。';
+            const prompt = isIndexQuery()
+                ? '根据以下数据分析指数'
+                : (holdingStatus === 'yes'
+                    ? '根据以下数据分析，接下来应该怎样操作？请给出持有或卖出或加仓或减仓的建议，并说明理由。'
+                    : '根据以下数据分析，接下来应该怎样操作？请给出买入的建议，并说明理由。');
             const allText = stockInfo + holdingInfo + '\n' + prompt + '\n\n' + realtime + '\n\n' + history;
             
             copyToClipboard(allText).then(() => {
