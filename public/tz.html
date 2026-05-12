@@ -210,6 +210,111 @@
         .theme-light .data-preview { background: #f8fafc; border-color: #e2e8f0; }
         .theme-light .data-preview th { background: #f1f5f9; color: #64748b; }
         
+        .btn-outline {
+            background: #fff;
+            color: #667eea;
+            border: 2px solid #667eea;
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: rgba(102, 126, 234, 0.08);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .index-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .index-modal {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            max-width: 400px;
+            width: 100%;
+            padding: 22px 24px 24px;
+        }
+        .index-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .index-modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #444;
+        }
+        .index-modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 10px;
+            font-size: 22px;
+            line-height: 1;
+            color: #666;
+            cursor: pointer;
+            min-width: auto;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .index-modal-close:hover {
+            background: #e8e8e8;
+            transform: none;
+            box-shadow: none;
+        }
+        .index-modal-hint {
+            font-size: 13px;
+            color: #888;
+            margin: 0 0 18px;
+            line-height: 1.5;
+        }
+        .index-modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .index-modal-actions button {
+            width: 100%;
+            margin: 0;
+        }
+        .theme-dark .index-modal {
+            background: #252538;
+            border: 1px solid #3a3a5a;
+        }
+        .theme-dark .index-modal-header h3 { color: #e0e0e0; }
+        .theme-dark .index-modal-hint { color: #a0a0b0; }
+        .theme-dark .index-modal-close {
+            background: #3a3a5a;
+            color: #c0c0d0;
+        }
+        .theme-dark .index-modal-close:hover { background: #45456a; }
+        .theme-dark .btn-outline {
+            background: transparent;
+            color: #a0a0ff;
+            border-color: #6b6bdd;
+        }
+        .theme-dark .btn-outline:hover {
+            background: rgba(102, 126, 234, 0.15);
+        }
+        .theme-light .index-modal {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+        }
+        .theme-light .index-modal-header h3 { color: #334155; }
+        .theme-light .index-modal-hint { color: #64748b; }
+        
         .copy-btn { 
             padding: 8px 16px; 
             font-size: 13px; 
@@ -710,6 +815,7 @@
                 <input type="number" id="positionPercent" placeholder="仓位(%)，例如：10" step="0.1" min="0" max="100">
             </div>
             <button id="searchBtn" onclick="queryStock()">查询</button>
+            <button type="button" id="indexShortcutBtn" class="btn-outline" onclick="openIndexModal()">大盘指数</button>
             <!-- 主题切换器（移动端） -->
             <div class="theme-switcher theme-switcher-mobile">
                 <span class="theme-label">主题</span>
@@ -764,6 +870,21 @@
 
     <div class="toast" id="toast">✓ 已复制到剪贴板</div>
 
+    <div id="indexModalOverlay" class="index-modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="indexModalTitle" onclick="if (event.target === this) closeIndexModal()">
+        <div class="index-modal" onclick="event.stopPropagation()">
+            <div class="index-modal-header">
+                <h3 id="indexModalTitle">大盘指数快捷查询</h3>
+                <button type="button" class="index-modal-close" onclick="closeIndexModal()" title="关闭">×</button>
+            </div>
+            <p class="index-modal-hint">将使用上方已选的周期（日线 / 周线 / 月线）与天数范围拉取数据。</p>
+            <div class="index-modal-actions">
+                <button type="button" onclick="queryIndexShortcut('399001')">深证成指</button>
+                <button type="button" onclick="queryIndexShortcut('000001')">上证指数</button>
+                <button type="button" onclick="queryIndexShortcut('899050')">北证50</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 主题切换功能
         function setTheme(theme) {
@@ -778,6 +899,23 @@
             const savedTheme = localStorage.getItem('stock-theme') || 'default';
             setTheme(savedTheme);
         })();
+
+        /** 最近一次成功拉取实时行情时的代码与前缀，用于刷新时与输入框修改区分 */
+        var lastQuotedState = { code: null, prefix: null };
+
+        function openIndexModal() {
+            document.getElementById('indexModalOverlay').style.display = 'flex';
+        }
+
+        function closeIndexModal() {
+            document.getElementById('indexModalOverlay').style.display = 'none';
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && document.getElementById('indexModalOverlay').style.display === 'flex') {
+                closeIndexModal();
+            }
+        });
 
         var realtimeCallback = null;
         function fortune_hq(data) {
@@ -985,8 +1123,12 @@
                 showToast('请先输入股票代码');
                 return;
             }
+            const forced =
+                lastQuotedState.code === stockCode && lastQuotedState.prefix
+                    ? lastQuotedState.prefix
+                    : undefined;
             try {
-                const rt = await fetchRealtimeData(stockCode);
+                const rt = await fetchRealtimeData(stockCode, forced);
                 if (rt.ok) {
                     showToast('✓ 实时行情已更新');
                 }
@@ -2353,16 +2495,11 @@
             '688790-昂瑞微', '688802-沐曦股份', '688807-优迅股份', '603248-锡华科技',
             '688805-健信超导'
         ];
-        async function queryStock() {
-            const stockCode = document.getElementById('stockCode').value.trim();
-            const period = document.getElementById('period').value;
-            
-            if (!stockCode || !/^\d{6}$/.test(stockCode)) {
-                showMessage('请输入正确的6位股票代码', true);
-                return;
-            }
+        async function runQuoteQuery(stockCode, options) {
+            var forcedHqPrefix = options && options.forcedHqPrefix;
+            var period = document.getElementById('period').value;
 
-            const btn = document.getElementById('searchBtn');
+            var btn = document.getElementById('searchBtn');
             btn.disabled = true;
             btn.textContent = '查询中...';
             showMessage('正在获取数据...');
@@ -2373,8 +2510,14 @@
             document.getElementById('stockInfoCard').style.display = 'none';
 
             try {
-                const rt = await fetchRealtimeData(stockCode);
-                await fetchHistoryData(stockCode, period, rt.ok ? rt.hqPrefix : undefined);
+                var rt = await fetchRealtimeData(stockCode, forcedHqPrefix);
+                var histPrefix;
+                if (forcedHqPrefix) {
+                    histPrefix = rt.ok ? rt.hqPrefix : forcedHqPrefix;
+                } else {
+                    histPrefix = rt.ok ? rt.hqPrefix : undefined;
+                }
+                await fetchHistoryData(stockCode, period, histPrefix);
                 hideMessage();
             } catch (error) {
                 showMessage('查询失败: ' + error.message, true);
@@ -2384,12 +2527,31 @@
             }
         }
 
+        async function queryStock() {
+            var stockCode = document.getElementById('stockCode').value.trim();
+            if (!stockCode || !/^\d{6}$/.test(stockCode)) {
+                showMessage('请输入正确的6位股票代码', true);
+                return;
+            }
+            await runQuoteQuery(stockCode, {});
+        }
+
+        async function queryIndexShortcut(stockCode) {
+            closeIndexModal();
+            document.getElementById('stockCode').value = stockCode;
+            if (!/^\d{6}$/.test(stockCode)) {
+                showMessage('指数代码无效', true);
+                return;
+            }
+            await runQuoteQuery(stockCode, { forcedHqPrefix: 'zs' });
+        }
+
         // 判断是否为可转债（代码以1开头）
         function isBond(code) {
             return code.startsWith('1');
         }
 
-        async function fetchRealtimeData(stockCode) {
+        async function fetchRealtimeData(stockCode, forcedPrefix) {
             const suffix = stockCode.slice(-3);
 
             async function tryPrefix(prefix) {
@@ -2399,25 +2561,38 @@
                     if (!data || !data.price_A1 || !data.price_A2) {
                         return null;
                     }
+                    if (prefix === 'zs' && data.price_A1[0] !== `zs_${stockCode}`) {
+                        return null;
+                    }
                     return data;
                 } catch (e) {
                     return null;
                 }
             }
 
-            const initialPrefix = isBond(stockCode) ? 'bd' : 'cn';
-            let data = await tryPrefix(initialPrefix);
-            let resolvedPrefix = data ? initialPrefix : null;
-            if (!data && initialPrefix === 'bd') {
-                data = await tryPrefix('cn');
-                if (data) {
-                    resolvedPrefix = 'cn';
+            let data = null;
+            let resolvedPrefix = null;
+
+            if (forcedPrefix === 'cn' || forcedPrefix === 'bd' || forcedPrefix === 'zs') {
+                data = await tryPrefix(forcedPrefix);
+                resolvedPrefix = data ? forcedPrefix : null;
+            } else {
+                const initialPrefix = isBond(stockCode) ? 'bd' : 'cn';
+                data = await tryPrefix(initialPrefix);
+                resolvedPrefix = data ? initialPrefix : null;
+                if (!data && initialPrefix === 'bd') {
+                    data = await tryPrefix('cn');
+                    if (data) {
+                        resolvedPrefix = 'cn';
+                    }
                 }
             }
 
             if (!data) {
                 return { ok: false };
             }
+
+            lastQuotedState = { code: stockCode, prefix: resolvedPrefix };
 
             const price_A1 = data.price_A1;
             const price_A2 = data.price_A2;
