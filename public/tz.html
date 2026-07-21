@@ -2612,13 +2612,13 @@
 
             const price_A1 = data.price_A1;
             const price_A2 = data.price_A2;
-            const price_A3 = data.price_A3 || [];
+            const volume = price_A2[8] || '--';
 
             const today = new Date();
             const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
             // 复制模式文本
-            const text = `日期：${dateStr}，今开：${price_A2[3]}，盘中：${price_A1[2]}，最低：${price_A2[7]}，最高：${price_A2[5]}，成交量：${price_A3[2] || '--'}，换手率：${price_A2[6]}，量比：${price_A2[4]}，市盈率：${price_A2[10]}，均价：${price_A2[0]}，涨停：${price_A2[9]}，跌停：${price_A2[11]}`;
+            const text = `日期：${dateStr}，今开：${price_A2[3]}，盘中：${price_A1[2]}，最低：${price_A2[7]}，最高：${price_A2[5]}，成交量：${volume}，换手率：${price_A2[6]}，量比：${price_A2[4]}，市盈率：${price_A2[10]}，均价：${price_A2[0]}，涨停：${price_A2[9]}，跌停：${price_A2[11]}`;
 
             // 预览模式表格
             const previewHtml = `
@@ -2630,7 +2630,7 @@
                         <td>${price_A1[2]}</td>
                         <td>${price_A2[7]}</td>
                         <td>${price_A2[5]}</td>
-                        <td>${price_A3[2] || '--'}</td>
+                        <td>${volume}</td>
                         <td>${price_A2[6]}</td>
                         <td>${price_A2[4]}</td>
                         <td>${price_A2[10]}</td>
