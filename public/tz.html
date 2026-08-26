@@ -291,6 +291,27 @@
             width: 100%;
             margin: 0;
         }
+        .confirm-modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .confirm-modal-actions button {
+            flex: 1;
+            margin: 0;
+        }
+        .confirm-modal-actions .btn-cancel {
+            background: #eee;
+            color: #555;
+        }
+        .confirm-modal-actions .btn-cancel:hover {
+            background: #e0e0e0;
+            box-shadow: none;
+            transform: none;
+        }
+        .theme-dark .confirm-modal-actions .btn-cancel {
+            background: #3a3a5a;
+            color: #c0c0d0;
+        }
         .theme-dark .index-modal {
             background: #252538;
             border: 1px solid #3a3a5a;
@@ -316,6 +337,211 @@
         }
         .theme-light .index-modal-header h3 { color: #334155; }
         .theme-light .index-modal-hint { color: #64748b; }
+
+        .watchlist-modal {
+            max-width: 480px;
+        }
+        .watchlist-add-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .watchlist-add-row input {
+            flex: 1;
+            min-width: 140px;
+            padding: 10px 14px;
+            font-size: 14px;
+        }
+        .watchlist-add-row button {
+            min-width: auto;
+            padding: 10px 14px;
+            font-size: 13px;
+        }
+        .watchlist-list {
+            max-height: 280px;
+            overflow-y: auto;
+            margin-bottom: 14px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+        .watchlist-empty {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+        .watchlist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-bottom: 1px solid #eee;
+            gap: 10px;
+        }
+        .watchlist-item:last-child { border-bottom: none; }
+        .watchlist-item-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+            cursor: pointer;
+        }
+        .watchlist-item-main input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+        .watchlist-item-name {
+            font-size: 14px;
+            color: #444;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .watchlist-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .watchlist-toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+        .watchlist-toolbar-left input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+        .watchlist-toolbar-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .watchlist-toolbar-actions button {
+            min-width: auto;
+            padding: 6px 10px;
+            font-size: 12px;
+            background: #eee;
+            color: #555;
+        }
+        .watchlist-toolbar-actions button:hover {
+            background: #e0e4ff;
+            color: #667eea;
+            transform: none;
+            box-shadow: none;
+        }
+        .watchlist-item-remove {
+            min-width: auto;
+            padding: 6px 12px;
+            font-size: 12px;
+            background: #eee;
+            color: #666;
+        }
+        .watchlist-item-remove:hover {
+            background: #f5576c;
+            color: #fff;
+            transform: none;
+            box-shadow: none;
+        }
+        .watchlist-modal-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .watchlist-modal-footer button {
+            width: 100%;
+            margin: 0;
+        }
+
+        .watchlist-result-progress {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 14px;
+        }
+        .watchlist-result-actions {
+            margin-bottom: 16px;
+        }
+        .watchlist-result-actions .copy-all-btn {
+            margin-bottom: 0;
+        }
+        .watchlist-result-item {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            background: #fafafa;
+        }
+        .watchlist-result-item:last-child { margin-bottom: 0; }
+        .watchlist-result-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .watchlist-result-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #444;
+        }
+        .watchlist-result-status {
+            font-size: 13px;
+            color: #888;
+            margin-top: 6px;
+        }
+        .watchlist-result-status.ok { color: #11998e; }
+        .watchlist-result-status.err { color: #f5576c; }
+        .watchlist-result-item .copy-btn {
+            flex-shrink: 0;
+        }
+
+        .theme-dark .watchlist-list {
+            background: #1e1e2e;
+            border-color: #3a3a5a;
+        }
+        .theme-dark .watchlist-item { border-bottom-color: #3a3a5a; }
+        .theme-dark .watchlist-item-name { color: #e0e0e0; }
+        .theme-dark .watchlist-toolbar-left { color: #a0a0b0; }
+        .theme-dark .watchlist-toolbar-actions button {
+            background: #3a3a5a;
+            color: #c0c0d0;
+        }
+        .theme-dark .watchlist-empty { color: #888; }
+        .theme-dark .watchlist-item-remove {
+            background: #3a3a5a;
+            color: #c0c0d0;
+        }
+        .theme-dark .watchlist-result-item {
+            background: #1e1e2e;
+            border-color: #3a3a5a;
+        }
+        .theme-dark .watchlist-result-title { color: #e0e0e0; }
+        .theme-dark .watchlist-result-progress { color: #a0a0b0; }
+        .theme-dark .watchlist-result-status { color: #a0a0b0; }
+        .theme-light .watchlist-list {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+        .theme-light .watchlist-item { border-bottom-color: #e2e8f0; }
+        .theme-light .watchlist-item-name { color: #334155; }
+        .theme-light .watchlist-result-item {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+        .theme-light .watchlist-result-title { color: #334155; }
         
         .copy-btn { 
             padding: 8px 16px; 
@@ -761,6 +987,24 @@
             .suggestion-item {
                 padding: 10px 14px;
             }
+
+            .watchlist-modal {
+                max-width: 100%;
+            }
+            .watchlist-add-row {
+                flex-direction: column;
+            }
+            .watchlist-add-row input,
+            .watchlist-add-row button {
+                width: 100%;
+            }
+            .watchlist-result-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .watchlist-result-item .copy-btn {
+                width: 100%;
+            }
         }
         
         /* 小屏手机 */
@@ -818,6 +1062,7 @@
             </div>
             <button id="searchBtn" onclick="queryStock()">查询</button>
             <button type="button" id="indexShortcutBtn" class="btn-outline" onclick="openIndexModal()">大盘指数</button>
+            <button type="button" id="watchlistBtn" class="btn-outline" onclick="openWatchlistModal()">自选股票</button>
             <!-- 主题切换器（移动端） -->
             <div class="theme-switcher theme-switcher-mobile">
                 <span class="theme-label">主题</span>
@@ -867,6 +1112,17 @@
             <button class="ai-btn" onclick="copyAndOpenAI()">🤖 复制并打开通义分析</button>
         </div>
 
+        <div class="card" id="watchlistResultCard" style="display:none;">
+            <div class="card-header">
+                <h2>自选股票查询结果</h2>
+            </div>
+            <div class="watchlist-result-progress" id="watchlistProgress"></div>
+            <div class="watchlist-result-actions" id="watchlistResultActions" style="display:none;">
+                <button class="copy-all-btn" onclick="copyAllWatchlist()">📋 复制全部自选</button>
+            </div>
+            <div id="watchlistResultList"></div>
+        </div>
+
         <div id="message" class="loading" style="display:none;"></div>
     </div>
 
@@ -883,6 +1139,50 @@
                 <button type="button" onclick="queryIndexShortcut('399001')">深证成指</button>
                 <button type="button" onclick="queryIndexShortcut('000001')">上证指数</button>
                 <button type="button" onclick="queryIndexShortcut('899050')">北证50</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="watchlistModalOverlay" class="index-modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="watchlistModalTitle" onclick="if (event.target === this) closeWatchlistModal()">
+        <div class="index-modal watchlist-modal" onclick="event.stopPropagation()">
+            <div class="index-modal-header">
+                <h3 id="watchlistModalTitle">自选股票</h3>
+                <button type="button" class="index-modal-close" onclick="closeWatchlistModal()" title="关闭">×</button>
+            </div>
+            <p class="index-modal-hint">默认全选；可单独勾选后再一键查询。添加/删除会写入 WATCHLIST_CODES（需 <code>npm run dev</code>）。</p>
+            <div class="watchlist-add-row">
+                <input type="text" id="watchlistAddInput" placeholder="输入6位代码" maxlength="6" autocomplete="off">
+                <button type="button" onclick="addWatchlistFromInput()">添加</button>
+                <button type="button" class="btn-outline" onclick="addWatchlistFromCurrent()">加入当前</button>
+            </div>
+            <div class="watchlist-toolbar" id="watchlistToolbar" style="display:none;">
+                <label class="watchlist-toolbar-left">
+                    <input type="checkbox" id="watchlistSelectAll" checked onchange="toggleWatchlistSelectAll(this.checked)">
+                    <span id="watchlistSelectedCount">已选 0 / 0</span>
+                </label>
+                <div class="watchlist-toolbar-actions">
+                    <button type="button" onclick="setWatchlistSelection(true)">全选</button>
+                    <button type="button" onclick="setWatchlistSelection(false)">取消全选</button>
+                </div>
+            </div>
+            <div class="watchlist-list" id="watchlistList"></div>
+            <div class="watchlist-modal-footer">
+                <button type="button" id="watchlistQueryBtn" onclick="queryWatchlist()">一键查询自选</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addStockListModalOverlay" class="index-modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="addStockListModalTitle" onclick="if (event.target === this) closeAddStockListModal()">
+        <div class="index-modal" onclick="event.stopPropagation()">
+            <div class="index-modal-header">
+                <h3 id="addStockListModalTitle">添加到下拉列表</h3>
+                <button type="button" class="index-modal-close" onclick="closeAddStockListModal()" title="关闭">×</button>
+            </div>
+            <p class="index-modal-hint" id="addStockListModalText">当前下拉列表中不存在此股票，是否添加到下拉列表中？</p>
+            <p class="index-modal-hint" style="margin-top:-8px;">确定后会写入本页脚本的 stockList（需 <code>npm run dev</code>）。</p>
+            <div class="confirm-modal-actions">
+                <button type="button" class="btn-cancel" onclick="closeAddStockListModal()">取消</button>
+                <button type="button" id="addStockListConfirmBtn" onclick="confirmAddStockToList()">确定</button>
             </div>
         </div>
     </div>
@@ -921,13 +1221,223 @@
             document.getElementById('indexModalOverlay').style.display = 'none';
         }
 
+        var watchlistQueryResults = [];
+        // 勾选状态：默认全选；新加股票默认勾选
+        var watchlistSelectedMap = {};
+
+        // 自选股票代码（页面增删会写回此数组；开发环境下同步到本 html 文件）
+        var WATCHLIST_CODES = [
+            '002202',
+            '601398',
+            '000927',
+            '688981',
+            '600547',
+        ];
+
+        function normalizeWatchlistCodes(list) {
+            if (!Array.isArray(list)) return [];
+            return list.filter(function (code) {
+                return typeof code === 'string' && /^\d{6}$/.test(code);
+            }).filter(function (code, index, arr) {
+                return arr.indexOf(code) === index;
+            });
+        }
+
+        function getWatchlist() {
+            WATCHLIST_CODES = normalizeWatchlistCodes(WATCHLIST_CODES);
+            return WATCHLIST_CODES.slice();
+        }
+
+        function syncWatchlistSelectionMap() {
+            var list = getWatchlist();
+            var next = {};
+            list.forEach(function (code) {
+                next[code] = watchlistSelectedMap[code] !== false;
+            });
+            watchlistSelectedMap = next;
+        }
+
+        function getSelectedWatchlist() {
+            syncWatchlistSelectionMap();
+            return getWatchlist().filter(function (code) {
+                return watchlistSelectedMap[code] !== false;
+            });
+        }
+
+        function updateWatchlistSelectAllState() {
+            var list = getWatchlist();
+            var selected = getSelectedWatchlist();
+            var countEl = document.getElementById('watchlistSelectedCount');
+            var allEl = document.getElementById('watchlistSelectAll');
+            var toolbar = document.getElementById('watchlistToolbar');
+            if (toolbar) {
+                toolbar.style.display = list.length ? 'flex' : 'none';
+            }
+            if (countEl) {
+                countEl.textContent = '已选 ' + selected.length + ' / ' + list.length;
+            }
+            if (allEl) {
+                allEl.checked = list.length > 0 && selected.length === list.length;
+                allEl.indeterminate = selected.length > 0 && selected.length < list.length;
+            }
+        }
+
+        function onWatchlistItemCheck(code, checked) {
+            watchlistSelectedMap[code] = !!checked;
+            updateWatchlistSelectAllState();
+        }
+
+        function setWatchlistSelection(checked) {
+            getWatchlist().forEach(function (code) {
+                watchlistSelectedMap[code] = !!checked;
+            });
+            renderWatchlistList();
+        }
+
+        function toggleWatchlistSelectAll(checked) {
+            setWatchlistSelection(checked);
+        }
+
+        function formatWatchlistCodesSnippet(codes) {
+            if (!codes.length) {
+                return 'var WATCHLIST_CODES = [\n        ];';
+            }
+            return 'var WATCHLIST_CODES = [\n' +
+                codes.map(function (code) { return "            '" + code + "',"; }).join('\n') +
+                '\n        ];';
+        }
+
+        async function persistWatchlistToHtml() {
+            var codes = getWatchlist();
+            try {
+                var res = await fetch('/api/watchlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ codes: codes })
+                });
+                if (!res.ok) {
+                    var errText = await res.text();
+                    throw new Error(errText || ('HTTP ' + res.status));
+                }
+                return true;
+            } catch (e) {
+                console.warn('写入 WATCHLIST_CODES 失败，可手动粘贴：\n' + formatWatchlistCodesSnippet(codes), e);
+                return false;
+            }
+        }
+
+        function resolveStockName(code) {
+            for (var i = 0; i < stockList.length; i++) {
+                var item = stockList[i];
+                if (item.indexOf(code + '-') === 0) {
+                    return item.slice(code.length + 1);
+                }
+            }
+            return code;
+        }
+
+        function renderWatchlistList() {
+            var listEl = document.getElementById('watchlistList');
+            var list = getWatchlist();
+            syncWatchlistSelectionMap();
+            if (list.length === 0) {
+                listEl.innerHTML = '<div class="watchlist-empty">暂无自选，请添加股票代码</div>';
+                updateWatchlistSelectAllState();
+                return;
+            }
+            listEl.innerHTML = list.map(function (code) {
+                var name = resolveStockName(code);
+                var label = name === code ? code : (name + '（' + code + '）');
+                var checked = watchlistSelectedMap[code] !== false ? ' checked' : '';
+                return '<div class="watchlist-item">' +
+                    '<label class="watchlist-item-main">' +
+                    '<input type="checkbox" class="watchlist-item-check" data-code="' + code + '"' + checked +
+                    ' onchange="onWatchlistItemCheck(\'' + code + '\', this.checked)">' +
+                    '<span class="watchlist-item-name">' + label + '</span>' +
+                    '</label>' +
+                    '<button type="button" class="watchlist-item-remove" onclick="removeWatchlistCode(\'' + code + '\')">删除</button>' +
+                    '</div>';
+            }).join('');
+            updateWatchlistSelectAllState();
+        }
+
+        function openWatchlistModal() {
+            renderWatchlistList();
+            document.getElementById('watchlistModalOverlay').style.display = 'flex';
+            var input = document.getElementById('watchlistAddInput');
+            input.value = '';
+            setTimeout(function () { input.focus(); }, 50);
+        }
+
+        function closeWatchlistModal() {
+            document.getElementById('watchlistModalOverlay').style.display = 'none';
+        }
+
+        async function addWatchlistCode(code) {
+            code = (code || '').trim();
+            if (!/^\d{6}$/.test(code)) {
+                showToast('请输入正确的6位股票代码');
+                return false;
+            }
+            var list = getWatchlist();
+            if (list.indexOf(code) !== -1) {
+                showToast('该股票已在自选中');
+                return false;
+            }
+            WATCHLIST_CODES.push(code);
+            watchlistSelectedMap[code] = true;
+            renderWatchlistList();
+            var saved = await persistWatchlistToHtml();
+            showToast(saved ? '✓ 已加入并写入 WATCHLIST_CODES' : '✓ 已加入内存（未能写入 html，请用 npm run dev）');
+            return true;
+        }
+
+        async function addWatchlistFromInput() {
+            var input = document.getElementById('watchlistAddInput');
+            if (await addWatchlistCode(input.value)) {
+                input.value = '';
+            }
+        }
+
+        function addWatchlistFromCurrent() {
+            addWatchlistCode(document.getElementById('stockCode').value.trim());
+        }
+
+        async function removeWatchlistCode(code) {
+            WATCHLIST_CODES = getWatchlist().filter(function (c) { return c !== code; });
+            delete watchlistSelectedMap[code];
+            renderWatchlistList();
+            var saved = await persistWatchlistToHtml();
+            showToast(saved ? '✓ 已移除并写入 WATCHLIST_CODES' : '✓ 已移除内存（未能写入 html，请用 npm run dev）');
+        }
+
+        // 清理旧版 localStorage 自选缓存，避免与 WATCHLIST_CODES 混用
+        try {
+            localStorage.removeItem('stock-watchlist');
+            localStorage.removeItem('stock-watchlist-excluded');
+        } catch (e) {}
+
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && document.getElementById('indexModalOverlay').style.display === 'flex') {
+            if (e.key !== 'Escape') return;
+            if (document.getElementById('addStockListModalOverlay').style.display === 'flex') {
+                closeAddStockListModal();
+                return;
+            }
+            if (document.getElementById('watchlistModalOverlay').style.display === 'flex') {
+                closeWatchlistModal();
+                return;
+            }
+            if (document.getElementById('indexModalOverlay').style.display === 'flex') {
                 closeIndexModal();
             }
         });
 
+        document.getElementById('watchlistAddInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addWatchlistFromInput();
+        });
+
         var realtimeCallback = null;
+        var realtimeRequestId = 0;
         function fortune_hq(data) {
             if (realtimeCallback) {
                 const cb = realtimeCallback;
@@ -936,22 +1446,8 @@
             }
         }
 
-        function loadRealtime(url) {
-            return new Promise((resolve, reject) => {
-                realtimeCallback = resolve;
-                const script = document.createElement('script');
-                script.src = url;
-                script.onload = () => script.parentNode && script.parentNode.removeChild(script);
-                script.onerror = () => {
-                    script.parentNode && script.parentNode.removeChild(script);
-                    realtimeCallback = null;
-                    reject(new Error('请求失败'));
-                };
-                document.head.appendChild(script);
-            });
-        }
-
         var historyCallback = null;
+        var historyRequestId = 0;
         function historySearchHandler(data) {
             if (historyCallback) {
                 const cb = historyCallback;
@@ -960,18 +1456,96 @@
             }
         }
 
+        // JSONP 全局串行队列：同一时刻只发一个请求，避免回调互相覆盖
+        var jsonpQueue = Promise.resolve();
+        var JSONP_TIMEOUT_MS = 12000;
+        var WATCHLIST_STOCK_GAP_MS = 600;
+
+        function enqueueJsonp(task) {
+            var run = jsonpQueue.then(function () {
+                return task();
+            });
+            jsonpQueue = run.catch(function () {});
+            return run;
+        }
+
+        function sleep(ms) {
+            return new Promise(function (resolve) {
+                setTimeout(resolve, ms);
+            });
+        }
+
+        function loadRealtime(url) {
+            return enqueueJsonp(function () {
+                return new Promise(function (resolve, reject) {
+                    var requestId = ++realtimeRequestId;
+                    var settled = false;
+                    var timer = setTimeout(function () {
+                        if (settled || requestId !== realtimeRequestId) return;
+                        settled = true;
+                        realtimeCallback = null;
+                        reject(new Error('实时行情超时'));
+                    }, JSONP_TIMEOUT_MS);
+
+                    realtimeCallback = function (data) {
+                        if (settled || requestId !== realtimeRequestId) return;
+                        settled = true;
+                        clearTimeout(timer);
+                        resolve(data);
+                    };
+
+                    var script = document.createElement('script');
+                    script.src = url;
+                    script.onload = function () {
+                        script.parentNode && script.parentNode.removeChild(script);
+                    };
+                    script.onerror = function () {
+                        script.parentNode && script.parentNode.removeChild(script);
+                        if (settled || requestId !== realtimeRequestId) return;
+                        settled = true;
+                        clearTimeout(timer);
+                        realtimeCallback = null;
+                        reject(new Error('请求失败'));
+                    };
+                    document.head.appendChild(script);
+                });
+            });
+        }
+
         function loadHistory(url) {
-            return new Promise((resolve, reject) => {
-                historyCallback = resolve;
-                const script = document.createElement('script');
-                script.src = url + '&callback=historySearchHandler&rt=jsonp&r=' + Math.random() + '&' + Math.random();
-                script.onload = () => script.parentNode && script.parentNode.removeChild(script);
-                script.onerror = () => {
-                    script.parentNode && script.parentNode.removeChild(script);
-                    historyCallback = null;
-                    reject(new Error('请求失败'));
-                };
-                document.head.appendChild(script);
+            return enqueueJsonp(function () {
+                return new Promise(function (resolve, reject) {
+                    var requestId = ++historyRequestId;
+                    var settled = false;
+                    var timer = setTimeout(function () {
+                        if (settled || requestId !== historyRequestId) return;
+                        settled = true;
+                        historyCallback = null;
+                        reject(new Error('历史行情超时'));
+                    }, JSONP_TIMEOUT_MS);
+
+                    historyCallback = function (data) {
+                        if (settled || requestId !== historyRequestId) return;
+                        settled = true;
+                        clearTimeout(timer);
+                        resolve(data);
+                    };
+
+                    var script = document.createElement('script');
+                    script.src = url + '&callback=historySearchHandler&rt=jsonp&r=' + Math.random() + '&' + Math.random();
+                    script.onload = function () {
+                        script.parentNode && script.parentNode.removeChild(script);
+                    };
+                    script.onerror = function () {
+                        script.parentNode && script.parentNode.removeChild(script);
+                        if (settled || requestId !== historyRequestId) return;
+                        settled = true;
+                        clearTimeout(timer);
+                        historyCallback = null;
+                        reject(new Error('请求失败'));
+                    };
+                    document.head.appendChild(script);
+                });
             });
         }
 
@@ -1173,7 +1747,8 @@
             });
         }
 
-        const stockList = [
+        var stockList = [
+            '688836-宇树科技-W',
            
             // ==================== 可转债 ====================
             '110099-福能转债', '118060-瑞可转债', '118061-茂莱转债', '118059-颀中转债',
@@ -2524,6 +3099,7 @@
             document.getElementById('historyCard').style.display = 'none';
             document.getElementById('copyAllCard').style.display = 'none';
             document.getElementById('stockInfoCard').style.display = 'none';
+            document.getElementById('watchlistResultCard').style.display = 'none';
 
             try {
                 var rt = await fetchRealtimeData(stockCode, forcedHqPrefix);
@@ -2535,12 +3111,88 @@
                 }
                 await fetchHistoryData(stockCode, period, histPrefix);
                 hideMessage();
+                var infoText = document.getElementById('stockInfo').textContent || '';
+                var nameMatch = infoText.match(/^(.+)（(\d{6})）$/);
+                return {
+                    ok: true,
+                    code: (nameMatch && nameMatch[2]) || stockCode,
+                    name: (nameMatch && nameMatch[1]) || stockCode
+                };
             } catch (error) {
                 showMessage('查询失败: ' + error.message, true);
+                return { ok: false };
             } finally {
                 btn.disabled = false;
                 btn.textContent = '查询';
             }
+        }
+
+        var pendingAddStockListItem = null;
+
+        function isCodeInStockList(code) {
+            code = String(code || '');
+            for (var i = 0; i < stockList.length; i++) {
+                var item = stockList[i];
+                if (item === code || item.indexOf(code + '-') === 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function openAddStockListModal(code, name) {
+            pendingAddStockListItem = { code: code, name: name || code };
+            var label = pendingAddStockListItem.name === pendingAddStockListItem.code
+                ? pendingAddStockListItem.code
+                : (pendingAddStockListItem.name + '（' + pendingAddStockListItem.code + '）');
+            document.getElementById('addStockListModalText').textContent =
+                '当前下拉列表中不存在此股票「' + label + '」，是否添加到下拉列表中？';
+            document.getElementById('addStockListModalOverlay').style.display = 'flex';
+        }
+
+        function closeAddStockListModal() {
+            pendingAddStockListItem = null;
+            document.getElementById('addStockListModalOverlay').style.display = 'none';
+        }
+
+        async function persistStockListItemToHtml(code, name) {
+            try {
+                var res = await fetch('/api/stock-list', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: code, name: name })
+                });
+                if (!res.ok) {
+                    var errText = await res.text();
+                    throw new Error(errText || ('HTTP ' + res.status));
+                }
+                return true;
+            } catch (e) {
+                console.warn('写入 stockList 失败', e);
+                return false;
+            }
+        }
+
+        async function confirmAddStockToList() {
+            if (!pendingAddStockListItem || !pendingAddStockListItem.code) {
+                closeAddStockListModal();
+                return;
+            }
+            var code = pendingAddStockListItem.code;
+            var name = pendingAddStockListItem.name || code;
+            var entry = code + '-' + name;
+            if (!isCodeInStockList(code)) {
+                stockList.unshift(entry);
+            }
+            closeAddStockListModal();
+            var saved = await persistStockListItemToHtml(code, name);
+            showToast(saved ? '✓ 已添加到下拉列表并写入 stockList' : '✓ 已加入内存（未能写入 html，请用 npm run dev）');
+        }
+
+        function maybeOfferAddStockToList(queryResult) {
+            if (!queryResult || !queryResult.ok || !queryResult.code) return;
+            if (isCodeInStockList(queryResult.code)) return;
+            openAddStockListModal(queryResult.code, queryResult.name);
         }
 
         async function queryStock() {
@@ -2549,7 +3201,8 @@
                 showMessage('请输入正确的6位股票代码', true);
                 return;
             }
-            await runQuoteQuery(stockCode, {});
+            var result = await runQuoteQuery(stockCode, {});
+            maybeOfferAddStockToList(result);
         }
 
         async function queryIndexShortcut(stockCode) {
@@ -2567,7 +3220,7 @@
             return code.startsWith('1');
         }
 
-        async function fetchRealtimeData(stockCode, forcedPrefix) {
+        async function fetchRealtimePayload(stockCode, forcedPrefix) {
             const suffix = stockCode.slice(-3);
 
             async function tryPrefix(prefix) {
@@ -2608,8 +3261,6 @@
                 return { ok: false };
             }
 
-            lastQuotedState = { code: stockCode, prefix: resolvedPrefix };
-
             const price_A1 = data.price_A1;
             const price_A2 = data.price_A2;
             const volume = price_A2[8] || '--';
@@ -2617,10 +3268,8 @@
             const today = new Date();
             const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
 
-            // 复制模式文本
             const text = `日期：${dateStr}，今开：${price_A2[3]}，盘中：${price_A1[2]}，最低：${price_A2[7]}，最高：${price_A2[5]}，成交量：${volume}，换手率：${price_A2[6]}，量比：${price_A2[4]}，市盈率：${price_A2[10]}，均价：${price_A2[0]}，涨停：${price_A2[9]}，跌停：${price_A2[11]}`;
 
-            // 预览模式表格
             const previewHtml = `
                 <table>
                     <tr><th>日期</th><th>今开</th><th>盘中</th><th>最低</th><th>最高</th><th>成交量</th><th>换手率</th><th>量比</th><th>市盈率</th><th>均价</th><th>涨停</th><th>跌停</th></tr>
@@ -2643,17 +3292,18 @@
             const stockName = price_A1[1];
             const stockCodeFromApi = price_A1[0].split('_')[1];
 
-            document.getElementById('stockInfo').textContent = `${stockName}（${stockCodeFromApi}）`;
-            document.getElementById('stockInfoCard').style.display = 'block';
-
-            document.getElementById('queryDate').textContent = `（${dateStr}）`;
-            document.getElementById('realtimePreview').innerHTML = previewHtml;
-            document.getElementById('realtimeCopyText').textContent = text;
-            document.getElementById('realtimeCard').style.display = 'block';
-            return { ok: true, hqPrefix: resolvedPrefix };
+            return {
+                ok: true,
+                hqPrefix: resolvedPrefix,
+                name: stockName,
+                code: stockCodeFromApi,
+                dateStr: dateStr,
+                realtimeText: text,
+                previewHtml: previewHtml
+            };
         }
 
-        async function fetchHistoryData(stockCode, period, hqPrefixOverride) {
+        async function fetchHistoryPayload(stockCode, period, hqPrefixOverride) {
             const days = parseInt(document.getElementById('days').value);
             const today = new Date();
             const startDate = new Date(today);
@@ -2669,13 +3319,11 @@
             }
 
             const hq = data[0].hq;
-            
-            // 复制模式文本
+
             const lines = hq.map(row => {
                 return `日期：${row[0]}，开盘：${row[1]}，收盘：${row[2]}，涨跌额：${row[3]}，涨跌幅：${row[4]}，最低：${row[5]}，最高：${row[6]}，成交量(手)：${row[7]}，成交金额(万)：${row[8]}，换手率：${row[9]}`;
             });
 
-            // 预览模式表格
             const tableRows = hq.map(row => {
                 return `<tr>
                     <td>${row[0]}</td>
@@ -2697,11 +3345,185 @@
                     ${tableRows}
                 </table>`;
 
-            document.getElementById('daysLabel').textContent = days;
-            document.getElementById('historyPreview').innerHTML = previewHtml;
-            document.getElementById('historyCopyText').textContent = lines.join('\n');
+            return {
+                days: days,
+                historyText: lines.join('\n'),
+                previewHtml: previewHtml
+            };
+        }
+
+        async function fetchRealtimeData(stockCode, forcedPrefix) {
+            const payload = await fetchRealtimePayload(stockCode, forcedPrefix);
+            if (!payload.ok) {
+                return { ok: false };
+            }
+
+            lastQuotedState = { code: stockCode, prefix: payload.hqPrefix };
+
+            document.getElementById('stockInfo').textContent = `${payload.name}（${payload.code}）`;
+            document.getElementById('stockInfoCard').style.display = 'block';
+
+            document.getElementById('queryDate').textContent = `（${payload.dateStr}）`;
+            document.getElementById('realtimePreview').innerHTML = payload.previewHtml;
+            document.getElementById('realtimeCopyText').textContent = payload.realtimeText;
+            document.getElementById('realtimeCard').style.display = 'block';
+            return { ok: true, hqPrefix: payload.hqPrefix };
+        }
+
+        async function fetchHistoryData(stockCode, period, hqPrefixOverride) {
+            const payload = await fetchHistoryPayload(stockCode, period, hqPrefixOverride);
+
+            document.getElementById('daysLabel').textContent = payload.days;
+            document.getElementById('historyPreview').innerHTML = payload.previewHtml;
+            document.getElementById('historyCopyText').textContent = payload.historyText;
             document.getElementById('historyCard').style.display = 'block';
             document.getElementById('copyAllCard').style.display = 'block';
+        }
+
+        function buildWatchlistCopyText(item) {
+            const prompt = '先分析一下股票本身，再根据以下数据的分析趋势，给出接下来应该怎样操作？并详细的说明理由。';
+            return `${item.name}（${item.code}）\n未持有此股票\n` + prompt + '\n\n' + item.realtimeText + '\n\n' + item.historyText;
+        }
+
+        function hideSingleStockCards() {
+            document.getElementById('realtimeCard').style.display = 'none';
+            document.getElementById('historyCard').style.display = 'none';
+            document.getElementById('copyAllCard').style.display = 'none';
+            document.getElementById('stockInfoCard').style.display = 'none';
+        }
+
+        function renderWatchlistResults() {
+            const listEl = document.getElementById('watchlistResultList');
+            const actionsEl = document.getElementById('watchlistResultActions');
+            const successCount = watchlistQueryResults.filter(function (r) { return r.ok; }).length;
+
+            listEl.innerHTML = watchlistQueryResults.map(function (item, index) {
+                if (item.ok) {
+                    return '<div class="watchlist-result-item">' +
+                        '<div class="watchlist-result-head">' +
+                        '<div class="watchlist-result-title">' + item.name + '（' + item.code + '）</div>' +
+                        '<button type="button" class="copy-btn" onclick="copyWatchlistItem(' + index + ')">复制</button>' +
+                        '</div>' +
+                        '<div class="watchlist-result-status ok">查询成功</div>' +
+                        '</div>';
+                }
+                return '<div class="watchlist-result-item">' +
+                    '<div class="watchlist-result-head">' +
+                    '<div class="watchlist-result-title">' + (item.name || item.code) + '（' + item.code + '）</div>' +
+                    '</div>' +
+                    '<div class="watchlist-result-status err">失败：' + (item.error || '未知错误') + '</div>' +
+                    '</div>';
+            }).join('');
+
+            actionsEl.style.display = successCount > 0 ? 'block' : 'none';
+        }
+
+        function copyWatchlistItem(index) {
+            const item = watchlistQueryResults[index];
+            if (!item || !item.ok) {
+                showToast('该股票无可用数据');
+                return;
+            }
+            copyToClipboard(buildWatchlistCopyText(item)).then(function () {
+                showToast();
+            }).catch(function () {
+                showToast('复制失败，请手动复制');
+            });
+        }
+
+        function copyAllWatchlist() {
+            const texts = watchlistQueryResults
+                .filter(function (item) { return item.ok; })
+                .map(function (item) { return buildWatchlistCopyText(item); });
+            if (texts.length === 0) {
+                showToast('没有可复制的成功结果');
+                return;
+            }
+            copyToClipboard(texts.join('\n\n--------------------\n\n')).then(function () {
+                showToast();
+            }).catch(function () {
+                showToast('复制失败，请手动复制');
+            });
+        }
+
+        async function queryWatchlist() {
+            const list = getSelectedWatchlist();
+            if (getWatchlist().length === 0) {
+                showToast('请先添加自选股票');
+                return;
+            }
+            if (list.length === 0) {
+                showToast('请至少勾选一只股票');
+                return;
+            }
+
+            closeWatchlistModal();
+            hideSingleStockCards();
+            hideMessage();
+
+            const period = document.getElementById('period').value;
+            const searchBtn = document.getElementById('searchBtn');
+            const watchlistBtn = document.getElementById('watchlistQueryBtn');
+            searchBtn.disabled = true;
+            watchlistBtn.disabled = true;
+
+            watchlistQueryResults = [];
+            const card = document.getElementById('watchlistResultCard');
+            const progressEl = document.getElementById('watchlistProgress');
+            const listEl = document.getElementById('watchlistResultList');
+            const actionsEl = document.getElementById('watchlistResultActions');
+            card.style.display = 'block';
+            actionsEl.style.display = 'none';
+            listEl.innerHTML = '';
+
+            for (let i = 0; i < list.length; i++) {
+                const code = list[i];
+                const fallbackName = resolveStockName(code);
+                const label = fallbackName === code ? code : (fallbackName + '（' + code + '）');
+                progressEl.textContent = '按序查询 ' + (i + 1) + '/' + list.length + '：' + label;
+
+                // 上一只完成后再查下一只；首只不等待
+                if (i > 0) {
+                    await sleep(WATCHLIST_STOCK_GAP_MS);
+                }
+
+                try {
+                    const rt = await fetchRealtimePayload(code);
+                    if (!rt.ok) {
+                        watchlistQueryResults.push({
+                            ok: false,
+                            code: code,
+                            name: fallbackName,
+                            error: '无法获取实时行情'
+                        });
+                        renderWatchlistResults();
+                        continue;
+                    }
+                    // 实时与历史也严格串行，中间稍作间隔
+                    await sleep(300);
+                    const hist = await fetchHistoryPayload(code, period, rt.hqPrefix);
+                    watchlistQueryResults.push({
+                        ok: true,
+                        code: rt.code,
+                        name: rt.name,
+                        realtimeText: rt.realtimeText,
+                        historyText: hist.historyText
+                    });
+                } catch (error) {
+                    watchlistQueryResults.push({
+                        ok: false,
+                        code: code,
+                        name: fallbackName,
+                        error: error.message || '查询失败'
+                    });
+                }
+                renderWatchlistResults();
+            }
+
+            const successCount = watchlistQueryResults.filter(function (r) { return r.ok; }).length;
+            progressEl.textContent = '完成：成功 ' + successCount + ' / 共 ' + list.length + ' 只';
+            searchBtn.disabled = false;
+            watchlistBtn.disabled = false;
         }
 
         const stockInput = document.getElementById('stockCode');
